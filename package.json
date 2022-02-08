@@ -2,10 +2,9 @@
   "name": "messenger",
   "version": "1.0.0",
   "description": "My messenger",
-  "source": "static/index.html",
   "scripts": {
-    "dev": "parcel",
-    "build": "parcel build",
+    "dev": "parcel static/index.html",
+    "build": "parcel build static/index.html",
     "start": "node server.js"
   },
   "repository": {
