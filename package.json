@@ -1,0 +1,29 @@
+{
+  "name": "messenger",
+  "version": "1.0.0",
+  "description": "My messenger",
+  "scripts": {
+    "dev": "parcel static/index.html",
+    "build": "parcel build static/index.html",
+    "start": "npm run build && node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Serezhqa/middle.messenger.praktikum.yandex.git"
+  },
+  "author": "Sergey Podryabinnikov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Serezhqa/middle.messenger.praktikum.yandex/issues"
+  },
+  "homepage": "https://github.com/Serezhqa/middle.messenger.praktikum.yandex#readme",
+  "dependencies": {
+    "express": "^4.17.2"
+  },
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.2.1",
+    "parcel": "^2.2.1",
+    "sass": "^1.49.7",
+    "handlebars": "^4.7.7"
+  }
+}
