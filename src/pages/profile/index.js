@@ -103,16 +103,32 @@ renderToPage(profileTmpl, {
 });
 
 const editDataButton = document.querySelector('.profile__button_type_data');
+if (editDataButton) {
+  editDataButton.addEventListener('click', () => editButtonsClickHandler('editingData'));
+}
 const editPasswordButton = document.querySelector('.profile__button_type_password');
+if (editPasswordButton) {
+  editPasswordButton.addEventListener('click', () => editButtonsClickHandler('editingPassword'));
+}
 const changeImageButton = document.querySelector('.profile__image-button');
-editDataButton.addEventListener('click', () => editButtonsClickHandler('editingData'));
-editPasswordButton.addEventListener('click', () => editButtonsClickHandler('editingPassword'));
-changeImageButton.addEventListener('click', () => document.querySelector('.modal').classList.add('modal_opened'));
+if (changeImageButton) {
+  // Тут тоже проверить querySelector
+  changeImageButton.addEventListener('click', () => document.querySelector('.modal').classList.add('modal_opened'));
+}
 
 function editButtonsClickHandler(prop) {
-  prop === 'editingData' ? context.editingPassword = false : context.editingData = false;
+  if (prop === 'editingData') {
+    context.editingPassword = false;
+  } else {
+    context.editingData = false;
+  }
   context[prop] = true;
-  document.querySelector('.page').innerHTML = '';
+
+  const page = document.querySelector('.page');
+  if (page) {
+    page.innerHTML = '';
+  }
+
   renderToPage(profileTmpl, {
     ...context,
     editing: context.editingData || context.editingPassword
