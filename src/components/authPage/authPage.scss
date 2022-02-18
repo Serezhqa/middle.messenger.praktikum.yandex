@@ -1,0 +1,106 @@
+@import '../../variables';
+@import '../../mixins';
+
+.auth-page {
+  @include content_centered;
+
+  &__form {
+    padding: 50px 30px 30px;
+    box-sizing: border-box;
+    box-shadow: 0 0 6px rgb(0 0 0 14%);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    width: 340px;
+
+    &_type_login {
+      height: 460px;
+    }
+
+    &_type_register {
+      height: 615px;
+    }
+  }
+
+  &__title {
+    margin-top: 0;
+    margin-bottom: 40px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 20px;
+    align-self: center;
+  }
+
+  &__label {
+    visibility: hidden;
+    color: $color_secondary;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 9px;
+    line-height: 9px;
+    margin-top: 16px;
+    margin-bottom: 8px;
+
+    &:first-of-type {
+      margin-top: 0;
+    }
+
+    &_visible {
+      visibility: visible;
+    }
+  }
+
+  &__input {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 13px;
+    border: none;
+    border-bottom: 1px solid $color_link;
+    padding-bottom: 7px;
+    box-sizing: border-box;
+
+    &::placeholder {
+      color: $color_secondary;
+    }
+  }
+
+  &__error {
+    display: none;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 8px;
+    line-height: 8px;
+    color: $color_error;
+    margin-top: 7px;
+
+    &_visible {
+      display: block;
+    }
+  }
+
+  &__submit-button {
+    margin-top: auto;
+    margin-bottom: 14px;
+    padding: 12px;
+    box-sizing: border-box;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 13px;
+    border: none;
+    border-radius: 8px;
+    background-color: $color_link;
+    color: $color_button;
+  }
+
+  &__link {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 11px;
+    text-decoration: none;
+    align-self: center;
+  }
+}

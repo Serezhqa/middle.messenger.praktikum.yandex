@@ -1,4 +1,4 @@
-import './page500.sass';
+import './page500.scss';
 import {errorPageTmpl} from './page500.tmpl';
 import {renderToPage} from '../../utils/utils';
 

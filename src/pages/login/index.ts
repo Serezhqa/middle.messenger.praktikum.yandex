@@ -1,4 +1,4 @@
-import './login.sass';
+import './login.scss';
 import {authPageTmpl} from './login.tmpl';
 import {renderToPage, addListeners} from '../../utils/utils';
 

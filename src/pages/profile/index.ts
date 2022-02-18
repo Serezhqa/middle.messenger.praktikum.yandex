@@ -1,8 +1,8 @@
-import './profile.sass';
-import {profileTmpl} from './profile.tmpl';
-import Handlebars from 'handlebars';
-import {renderToPage} from '../../utils/utils';
-import {modalTmpl} from '../../components/modal/modal.tmpl';
+import './profile.scss';
+import * as Handlebars from 'handlebars';
+import { profileTmpl } from './profile.tmpl';
+import { renderToPage } from '../../utils/utils';
+import { modalTmpl } from '../../components/modal/modal.tmpl';
 
 const context = {
   editingData: false,
@@ -113,10 +113,15 @@ if (editPasswordButton) {
 const changeImageButton = document.querySelector('.profile__image-button');
 if (changeImageButton) {
   // Тут тоже проверить querySelector
-  changeImageButton.addEventListener('click', () => document.querySelector('.modal').classList.add('modal_opened'));
+  changeImageButton.addEventListener('click', () => {
+    const modal = document.querySelector('.modal');
+    if (modal) {
+      modal.classList.add('modal_opened');
+    }
+  });
 }
 
-function editButtonsClickHandler(prop) {
+function editButtonsClickHandler(prop: string) {
   if (prop === 'editingData') {
     context.editingPassword = false;
   } else {
