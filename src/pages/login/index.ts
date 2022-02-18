@@ -1,6 +1,6 @@
 import './login.scss';
-import {authPageTmpl} from './login.tmpl';
-import {renderToPage, addListeners} from '../../utils/utils';
+import { authPageTmpl } from './login.tmpl';
+import { renderToPage, addListeners } from '../../utils/utils';
 
 const context = {
   type: 'login',

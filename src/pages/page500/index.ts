@@ -1,6 +1,6 @@
 import './page500.scss';
-import {errorPageTmpl} from './page500.tmpl';
-import {renderToPage} from '../../utils/utils';
+import { errorPageTmpl } from './page500.tmpl';
+import { renderToPage } from '../../utils/utils';
 
 const context = {
   title: '500',

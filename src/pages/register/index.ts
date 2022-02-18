@@ -1,6 +1,6 @@
 import './register.scss';
-import {authPageTmpl} from './register.tmpl';
-import {renderToPage, addListeners} from '../../utils/utils';
+import { authPageTmpl } from './register.tmpl';
+import { renderToPage, addListeners } from '../../utils/utils';
 
 const context = {
   type: 'register',

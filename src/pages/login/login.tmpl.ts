@@ -1,1 +1,1 @@
-export {authPageTmpl} from '../../components/authPage/authPage.tmpl';
+export { authPageTmpl } from '../../components/authPage/authPage.tmpl';

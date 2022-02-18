@@ -4,7 +4,7 @@ export const profileTmpl = `
       <img class="profile__image" src="https://tinyurl.com/hmx3ka4a" alt="Аватар"/>
     </button>
     <h1 class="profile__display-name">Иван</h1>
-    
+
     <form class="profile__form">
       {{#if editingPassword}}
         {{#each passwordInputs}}
@@ -15,7 +15,7 @@ export const profileTmpl = `
           {{> inputGroup editing=../editing}}
         {{/each}}
       {{/if}}
-      
+
       {{#if editing}}
         <button class="profile__button profile__button_type_save" type="submit">Сохранить</button>
       {{else}}
@@ -24,7 +24,7 @@ export const profileTmpl = `
         <a class="profile__button profile__button_type_logout" href="/login.html">Выйти</a>
       {{/if}}
     </form>
-    
+
     <div class="profile__back">
       <a class="profile__back-arrow" href="/chats.html">
         <svg width="28" height="28" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -35,7 +35,7 @@ export const profileTmpl = `
       </a>
     </div>
   </section>
-  
+
   {{#with modal}}
     {{> modal}}
   {{/with}}
