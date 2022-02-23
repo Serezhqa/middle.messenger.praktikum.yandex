@@ -1,9 +1,9 @@
-import './page404.scss';
-import { errorPageTmpl } from './page404.tmpl';
-import { renderToPage } from '../../utils/utils';
+import ErrorPage from '../../components/errorPage/index';
+import renderDOM from '../../utils/renderDOM';
 
-const context = {
+const errorPage = new ErrorPage({
   title: '404',
   text: 'Не туда попали'
-};
-renderToPage(errorPageTmpl, context);
+});
+
+renderDOM('.app', errorPage);

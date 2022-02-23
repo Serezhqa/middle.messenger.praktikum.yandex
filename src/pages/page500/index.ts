@@ -1,9 +1,9 @@
-import './page500.scss';
-import { errorPageTmpl } from './page500.tmpl';
-import { renderToPage } from '../../utils/utils';
+import ErrorPage from '../../components/errorPage/index';
+import renderDOM from '../../utils/renderDOM';
 
-const context = {
+const errorPage = new ErrorPage({
   title: '500',
   text: 'Мы уже фиксим'
-};
-renderToPage(errorPageTmpl, context);
+});
+
+renderDOM('.app', errorPage);

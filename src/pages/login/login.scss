@@ -1,1 +1,40 @@
-@import '../../components/authPage/authPage';
+@import '../../variables';
+@import '../../mixins';
+
+.login {
+  @include content_centered;
+
+  &__form {
+    padding: 50px 30px 30px;
+    box-sizing: border-box;
+    box-shadow: 0 0 6px rgb(0 0 0 / 14%);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    width: 340px;
+    height: 460px;
+  }
+
+  &__title {
+    margin-top: 0;
+    margin-bottom: 40px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 20px;
+    align-self: center;
+  }
+
+  &__link {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 11px;
+    text-decoration: none;
+    align-self: center;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
