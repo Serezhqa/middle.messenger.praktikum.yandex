@@ -1,52 +1,71 @@
+import Block from '../../utils/Block';
+import template from './register.hbs';
 import './register.scss';
-import { authPageTmpl } from './register.tmpl';
-import { renderToPage, addListeners } from '../../utils/utils';
+import AuthInputGroup from '../../components/authInputGroup/index';
+import SubmitButton from '../../components/submitButton';
+import renderDOM from '../../utils/renderDOM';
 
-const context = {
-  type: 'register',
-  title: 'Регистрация',
-  inputGroup: [
-    {
-      type: 'email',
+export default class Register extends Block {
+  protected initChildren() {
+    this.children.emailAuthInputGroup = new AuthInputGroup({
       name: 'email',
       placeholder: 'Почта',
+      type: 'email',
       errorText: 'Ошибка'
-    },
-    {
-      type: 'text',
+    });
+
+    this.children.loginAuthInputGroup = new AuthInputGroup({
       name: 'login',
       placeholder: 'Логин',
-      errorText: 'Ошибка'
-    },
-    {
       type: 'text',
+      errorText: 'Ошибка'
+    });
+
+    this.children.firstNameAuthInputGroup = new AuthInputGroup({
       name: 'first_name',
       placeholder: 'Имя',
-      errorText: 'Ошибка'
-    },
-    {
       type: 'text',
+      errorText: 'Ошибка'
+    });
+
+    this.children.secondNameAuthInputGroup = new AuthInputGroup({
       name: 'second_name',
       placeholder: 'Фамилия',
+      type: 'text',
       errorText: 'Ошибка'
-    },
-    {
-      type: 'password',
+    });
+
+    this.children.phoneAuthInputGroup = new AuthInputGroup({
+      name: 'phone',
+      placeholder: 'Телефон',
+      type: 'text',
+      errorText: 'Ошибка'
+    });
+
+    this.children.passwordAuthInputGroup = new AuthInputGroup({
       name: 'password',
       placeholder: 'Пароль',
-      errorText: 'Ошибка'
-    },
-    {
       type: 'password',
+      errorText: 'Ошибка'
+    });
+
+    this.children.password2AuthInputGroup = new AuthInputGroup({
       name: 'password2',
       placeholder: 'Пароль (ещё раз)',
-      errorText: 'Пароли не совпадают'
-    }
-  ],
-  buttonText: 'Зарегистрироваться',
-  route: '/login.html',
-  linkText: 'Войти'
-};
+      type: 'password',
+      errorText: 'Ошибка'
+    });
 
-renderToPage(authPageTmpl, context);
-addListeners();
+    this.children.submitButton = new SubmitButton({
+      text: 'Зарегистрироваться'
+    });
+  }
+
+  render() {
+    return this.compile(template, {});
+  }
+}
+
+const register = new Register();
+
+renderDOM('.app', register);

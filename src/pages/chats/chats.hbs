@@ -1,20 +1,18 @@
-export const chatsTmpl = `
-  <section class="chats-page">
-    <div class="chats-page__chats">
-      <div class="chats-page__menu">
-        <div class="chats-page__wrapper">
-          <button class="chats-page__add-chat-button">
-            <svg width="30" height="30" fill="none" xmlns="http://www.w3.org/2000/svg"><path stroke="#999" d="M15.5 0v30"/><path opacity=".99" stroke="#999" d="M30 15.5H0"/></svg>
-          </button>
-          <p class="chats-page__profile-link">Профиль ></p>
-        </div>
-        <input class="chats-page__search-input" type="text" placeholder="Поиск"/>
+<section class="chats">
+  <div class="chats__panel">
+    <div class="chats__menu">
+      <div class="chats__wrapper">
+        <button class="chats__add-chat-button" type="button"></button>
+        <a class="chats__profile-link" href="profile.html">Профиль ></a>
       </div>
+      <input class="chats__search-input" type="text" placeholder="Поиск"/>
+    </div>
+    <div class="chats__chatlist">
       <div class="chat">
         <img class="chat__image" src="https://tinyurl.com/7rumutmn" alt="Аватар чата"/>
         <div class="chat__message-wrapper">
           <p class="chat__name">Имя чата</p>
-          <p class="chat__message">Сообщение чата</p>
+          <p class="chat__message"><span class="chat__own-message">Вы: </span>Сообщение чата</p>
         </div>
         <div class="chat__time-wrapper">
           <p class="chat__time">21:30</p>
@@ -155,21 +153,33 @@ export const chatsTmpl = `
       </div>
     </div>
 
-    <div class="chats-page__current-chat">
-<!--      <p class="chats-page__placeholder">Выберите чат, чтобы отправить сообщение</p>-->
-      <div class="chats-page__options-wrapper">
-        <img class="chats-page__current-chat-image" src="https://tinyurl.com/7rumutmn" alt="Аватар чата"/>
-        <p class="chats-page__current-chat-name">Имя чата</p>
-        <button class="chats-page__options-button">
-          <svg width="3" height="16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="1.5" cy="2" r="1.5" fill="#1E1E1E"/><circle cx="1.5" cy="8" r="1.5" fill="#1E1E1E"/><circle cx="1.5" cy="14" r="1.5" fill="#1E1E1E"/></svg>
-        </button>
-      </div>
-      <div class="chats-page__messages">
-        <p class="chats-page__date">19 февраля</p>
-      </div>
-      <div class="chats-page__input-wrapper">
+  </div>
 
+  <div class="chats__current-chat">
+    <!--      <p class="chats__placeholder">Выберите чат, чтобы отправить сообщение</p>-->
+    <div class="chats__options-wrapper">
+      <img class="chats__current-chat-image" src="https://tinyurl.com/7rumutmn" alt="Аватар чата"/>
+      <p class="chats__current-chat-name">Имя чата</p>
+      <button class="chats__options-button" type="button"></button>
+      <div class="chats__options">
+        <p class="chats__option">Добавить пользователя</p>
+        <p class="chats__option">Удалить пользователя</p>
+        <p class="chats__option">Изменить аватар чата</p>
+        <p class="chats__option">Удалить чат</p>
       </div>
     </div>
-  </section>
-`;
+    <div class="chats__messages">
+      <p class="chats__date">19 февраля</p>
+    </div>
+    <div class="chats__input-wrapper">
+      <button class="chats__attachments-button" type="button"></button>
+      <input class="chats__message-input" type="text" name="message" placeholder="Сообщение"/>
+      <button class="chats__send-message-button" type="button"></button>
+      <div class="chats__attachments">
+        <p class="chats__attachment chats__attachment_type_media-file">Фото или видео</p>
+        <p class="chats__attachment chats__attachment_type_file">Файл</p>
+        <p class="chats__attachment chats__attachment_type_location">Локация</p>
+      </div>
+    </div>
+  </div>
+</section>
