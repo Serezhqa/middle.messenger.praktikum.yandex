@@ -1,6 +1,5 @@
 @import '../../variables';
 @import '../../mixins';
-@import '../../components/modal/modal';
 
 .profile {
   height: 100%;
@@ -65,44 +64,22 @@
     flex-direction: column;
   }
 
-  &__input-group {
-    display: flex;
-    justify-content: space-between;
-    padding-bottom: 10px;
-    box-sizing: border-box;
+  &__data-inputs-wrapper {
+    margin-bottom: 60px;
+  }
+
+  &__password-inputs-wrapper {
+    margin-bottom: 162px;
+  }
+
+  &__button-wrapper {
     border-bottom: 1px solid $color_input-group;
+    box-sizing: border-box;
+    padding-bottom: 10px;
     margin-bottom: 10px;
-
-    &:last-of-type {
-      padding-bottom: 0;
-      border: none;
-      margin-bottom: 60px;
-    }
-  }
-
-  &__label {
-    font-style: normal;
-    font-weight: 500;
-    font-size: 13px;
-    line-height: 13px;
-    margin-right: auto;
-  }
-
-  &__input {
-    font-style: normal;
-    font-weight: 500;
-    font-size: 13px;
-    line-height: 13px;
-    color: $color_secondary;
-    border: none;
-    text-align: right;
-    background-color: transparent;
   }
 
   &__button {
-    border: none;
-    padding: 0;
-    box-sizing: border-box;
     font-style: normal;
     font-weight: 500;
     font-size: 13px;
@@ -114,42 +91,26 @@
     }
 
     &_type_data {
+      border: none;
       color: $color_link;
-      border-bottom: 1px solid $color_input-group;
       background-color: transparent;
-      padding-bottom: 10px;
-      align-self: start;
-      margin-bottom: 10px;
+      padding: 0;
     }
 
     &_type_password {
+      border: none;
       color: $color_link;
-      border-bottom: 1px solid $color_input-group;
       background-color: transparent;
-      padding-bottom: 10px;
-      align-self: start;
-      margin-bottom: 10px;
+      padding: 0;
     }
 
     &_type_logout {
       color: $color_logout;
-      margin-bottom: 0;
-      background-color: transparent;
-      align-self: start;
       text-decoration: none;
 
       &:hover {
         opacity: 0.5;
       }
-    }
-
-    &_type_save {
-      background-color: $color_link;
-      border-radius: 8px;
-      padding: 12px 70px;
-      width: 280px;
-      color: $color_button;
-      align-self: center;
     }
   }
 
@@ -164,6 +125,9 @@
   }
 
   &__back-arrow {
+    background-image: url('../../images/back-arrow.svg');
+    background-repeat: no-repeat;
+    background-position: center;
     display: block;
     width: 28px;
     height: 28px;
@@ -174,20 +138,4 @@
       opacity: 0.8;
     }
   }
-}
-
-.modal__label {
-  color: $color_link;
-  margin-top: 43px;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 16px;
-  text-decoration-line: underline;
-  width: 122px;
-  text-align: center;
-}
-
-.modal__input {
-  visibility: hidden;
 }

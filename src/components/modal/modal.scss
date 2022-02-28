@@ -25,10 +25,8 @@
     border-radius: 12px;
     display: flex;
     flex-direction: column;
-    align-items: center;
     padding: 40px 30px;
     box-sizing: border-box;
-    position: relative;
   }
 
   &__title {
@@ -37,20 +35,57 @@
     font-size: 15px;
     line-height: 20px;
     margin-top: 0;
-    margin-bottom: 0;
+    margin-bottom: 50px;
+    text-align: center;
+
+    &_error {
+      color: $color_error;
+    }
   }
 
-  &__button {
-    background: $color_link;
-    border-radius: 8px;
-    padding: 12px;
-    box-sizing: border-box;
-    border: none;
-    color: $color_button;
+  &__content {
+    margin-bottom: 33px;
+  }
+
+  &__file-label {
+    color: $color_link;
     font-style: normal;
     font-weight: 500;
-    font-size: 13px;
-    line-height: 13px;
-    width: 280px;
+    font-size: 12px;
+    line-height: 16px;
+    text-decoration-line: underline;
+    width: 122px;
+    height: 32px;
+    text-align: center;
+    align-self: center;
+
+    &_hidden {
+      display: none;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &__file-input {
+    visibility: hidden;
+    height: 38px;
+  }
+
+  &__filename {
+    color: $color_filename;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    height: 32px;
+    display: none;
+    margin: 0;
+    text-align: center;
+
+    &_visible {
+      display: block;
+    }
   }
 }

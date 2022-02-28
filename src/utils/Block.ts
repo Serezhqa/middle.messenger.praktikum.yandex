@@ -115,9 +115,9 @@ export default class Block {
         return typeof value === 'function' ? value.bind(target) : value;
       },
       set(target: Record<string, unknown>, prop: string, value: unknown) {
-        // eslint-disable-next-line no-param-reassign
+        const oldProps = { ...target };
         target[prop] = value;
-        self.eventBus().emit(Block.EVENTS.FLOW_CDU, { ...target }, target);
+        self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, target);
         return true;
       },
       deleteProperty() {
@@ -134,7 +134,7 @@ export default class Block {
     }
 
     Object.entries(events).forEach(([event, listener]) => {
-      this._element!.removeEventListener(event, listener);
+      this._element?.removeEventListener(event, listener);
     });
   }
 
@@ -146,7 +146,7 @@ export default class Block {
     }
 
     Object.entries(events).forEach(([event, listener]) => {
-      this._element!.addEventListener(event, listener);
+      this._element?.addEventListener(event, listener);
     });
   }
 

@@ -1,141 +1,168 @@
+import Block from '../../utils/Block';
+import template from './profile.hbs';
 import './profile.scss';
-import * as Handlebars from 'handlebars';
-import { profileTmpl } from './profile.tmpl';
-import { renderToPage } from '../../utils/utils';
-import { modalTmpl } from '../../components/modal/modal.tmpl';
+import renderDOM from '../../utils/renderDOM';
+import ProfileInputGroup from '../../components/profileInputGroup';
+import SubmitButton from '../../components/submitButton';
+import Modal, { clickHandler, fileInputChangeHandler } from '../../components/modal';
 
-const context = {
-  editingData: false,
-  editingPassword: false,
-  dataInputs: [
-    {
-      id: 'profile__input_email',
+export default class Profile extends Block {
+  protected initChildren() {
+    this.children.emailProfileInputGroup = new ProfileInputGroup({
+      name: 'email',
       text: 'Почта',
       type: 'email',
-      name: 'email',
-      value: 'pochta@yandex.ru'
-    },
-    {
-      id: 'profile__input_login',
+      value: 'pochta@yandex.ru',
+      editing: false
+    });
+
+    this.children.loginProfileInputGroup = new ProfileInputGroup({
+      name: 'login',
       text: 'Логин',
       type: 'text',
-      name: 'login',
-      value: 'ivanivanov'
-    },
-    {
-      id: 'profile__input_first-name',
+      value: 'ivanivanov',
+      editing: false
+    });
+
+    this.children.firstNameProfileInputGroup = new ProfileInputGroup({
+      name: 'first_name',
       text: 'Имя',
       type: 'text',
-      name: 'first_name',
-      value: 'Иван'
-    },
-    {
-      id: 'profile__input_second-name',
+      value: 'Иван',
+      editing: false
+    });
+
+    this.children.secondNameProfileInputGroup = new ProfileInputGroup({
+      name: 'second_name',
       text: 'Фамилия',
       type: 'text',
-      name: 'second_name',
-      value: 'Иванов'
-    },
-    {
-      id: 'profile__input_display-name',
+      value: 'Иванов',
+      editing: false
+    });
+
+    this.children.displayNameProfileInputGroup = new ProfileInputGroup({
+      name: 'display_name',
       text: 'Имя в чате',
       type: 'text',
-      name: 'display_name',
-      value: 'Иван'
-    },
-    {
-      id: 'profile__input_phone',
+      value: 'Иван',
+      editing: false
+    });
+
+    this.children.phoneProfileInputGroup = new ProfileInputGroup({
+      name: 'phone',
       text: 'Телефон',
       type: 'text',
-      name: 'phone',
-      value: '+7 (909) 967 30 30'
-    }
-  ],
-  passwordInputs: [
-    {
-      id: 'profile__input_old-password',
+      value: '+7 (909) 123 45 67',
+      editing: false
+    });
+
+    this.children.oldPasswordProfileInputGroup = new ProfileInputGroup({
+      name: 'oldPassword',
       text: 'Старый пароль',
       type: 'password',
-      name: 'oldPassword',
-      value: '12345678'
-    },
-    {
-      id: 'profile__input_new-password',
+      value: '',
+      editing: true
+    });
+
+    this.children.newPassword1ProfileInputGroup = new ProfileInputGroup({
+      name: 'newPassword',
       text: 'Новый пароль',
       type: 'password',
-      name: 'newPassword',
-      value: '87654321'
-    },
-    {
-      id: 'profile__input_new-password2',
+      value: '',
+      editing: true
+    });
+
+    this.children.newPassword2ProfileInputGroup = new ProfileInputGroup({
+      name: 'newPassword2',
       text: 'Повторите новый пароль',
       type: 'password',
-      name: 'newPassword2',
-      value: '87654321'
-    }
-  ],
-  modal: {
-    title: 'Загрузите файл',
-    id: 'modal__input_type_avatar',
-    type: 'file',
-    name: 'avatar',
-    placeholder: 'placeholder',
-    buttonText: 'Поменять'
+      value: '',
+      editing: true
+    });
+
+    this.children.submitButton = new SubmitButton({
+      text: 'Сохранить'
+    });
+
+    this.children.changeImageModal = new Modal({
+      modificator: 'change-image',
+      title: 'Загрузите файл',
+      withFileInput: true,
+      events: {
+        click: clickHandler,
+        change: fileInputChangeHandler
+      },
+      button: new SubmitButton({
+        text: 'Поменять'
+      })
+    });
   }
-};
 
-Handlebars.registerPartial('inputGroup', `
-        <div class="profile__input-group">
-          <label class="profile__label" for="{{id}}">{{text}}</label>
-          <input class="profile__input" id="{{id}}" type="{{type}}" name="{{name}}" value="{{value}}"
-            {{#unless editing}}disabled{{/unless}}/>
-        </div>
-`);
-Handlebars.registerPartial('modal', modalTmpl);
-Handlebars.registerPartial('modal__form-content', `
-  <label class="modal__label" for="modal__input_type_avatar">Выбрать файл на компьютере</label>
-  <input class="modal__input" id="modal__input_type_avatar" type="file" name="name"/>
-`);
+  protected componentDidUpdate(oldProps: any, newProps: any): boolean {
+    if (oldProps.editing !== newProps.editing) {
+      this.children.emailProfileInputGroup.setProps({
+        editing: newProps.editing
+      });
+      this.children.loginProfileInputGroup.setProps({
+        editing: newProps.editing
+      });
+      this.children.firstNameProfileInputGroup.setProps({
+        editing: newProps.editing
+      });
+      this.children.secondNameProfileInputGroup.setProps({
+        editing: newProps.editing
+      });
+      this.children.displayNameProfileInputGroup.setProps({
+        editing: newProps.editing
+      });
+      this.children.phoneProfileInputGroup.setProps({
+        editing: newProps.editing
+      });
+    }
 
-renderToPage(profileTmpl, {
-  ...context,
-  editing: context.editingData || context.editingPassword
+    return super.componentDidUpdate(oldProps, newProps);
+  }
+
+  render() {
+    return this.compile(template, { ...this.props });
+  }
+}
+
+const profile = new Profile({
+  editingData: false,
+  editingPassword: false,
+  editing: false
 });
+
+renderDOM('.app', profile);
 
 const editDataButton = document.querySelector('.profile__button_type_data');
 if (editDataButton) {
-  // editDataButton.addEventListener('click', () => editButtonsClickHandler('editingData'));
-}
-const editPasswordButton = document.querySelector('.profile__button_type_password');
-if (editPasswordButton) {
-  // editPasswordButton.addEventListener('click', () => editButtonsClickHandler('editingPassword'));
-}
-const changeImageButton = document.querySelector('.profile__image-button');
-if (changeImageButton) {
-  // Тут тоже проверить querySelector
-  changeImageButton.addEventListener('click', () => {
-    const modal = document.querySelector('.modal');
-    if (modal) {
-      modal.classList.add('modal_opened');
-    }
+  editDataButton.addEventListener('click', () => {
+    profile.setProps({
+      editingData: true,
+      editingPassword: false,
+      editing: true
+    });
   });
 }
 
-// function editButtonsClickHandler(prop: string) {
-//   if (prop === 'editingData') {
-//     context.editingPassword = false;
-//   } else {
-//     context.editingData = false;
-//   }
-//   context[prop] = true;
-//
-//   const page = document.querySelector('.page');
-//   if (page) {
-//     page.innerHTML = '';
-//   }
-//
-//   renderToPage(profileTmpl, {
-//     ...context,
-//     editing: context.editingData || context.editingPassword
-//   });
-// }
+const editPasswordButton = document.querySelector('.profile__button_type_password');
+if (editPasswordButton) {
+  editPasswordButton.addEventListener('click', () => {
+    profile.setProps({
+      editingData: false,
+      editingPassword: true,
+      editing: true
+    });
+  });
+}
+
+const changeImageButton = document.querySelector('.profile__image-button');
+const modal = document.querySelector('.modal');
+
+if (changeImageButton && modal) {
+  changeImageButton.addEventListener('click', () => {
+    modal.classList.add('modal_opened');
+  });
+}

@@ -1,0 +1,35 @@
+@import '../../variables';
+
+.profile-input-group {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  box-sizing: border-box;
+  border-bottom: 1px solid $color_input-group;
+  margin-bottom: 10px;
+
+  &:last-of-type {
+    padding-bottom: 0;
+    border: none;
+    margin-bottom: 0;
+  }
+
+  &__label {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 13px;
+    margin-right: auto;
+  }
+
+  &__input {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 13px;
+    color: $color_secondary;
+    border: none;
+    text-align: right;
+    background-color: transparent;
+  }
+}
