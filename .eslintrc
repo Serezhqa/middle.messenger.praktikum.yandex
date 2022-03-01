@@ -10,7 +10,8 @@
     "no-underscore-dangle": "off",
     "prefer-destructuring": "off",
     "class-methods-use-this": "off",
-    "no-param-reassign": "off"
+    "no-param-reassign": "off",
+    "arrow-body-style": "off"
   },
   "parserOptions": {
     "project": "./tsconfig.json"
