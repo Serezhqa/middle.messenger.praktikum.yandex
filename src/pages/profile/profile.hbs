@@ -4,12 +4,12 @@
   </button>
   <h1 class="profile__display-name">Иван</h1>
 
-  <form class="profile__form">
+  <form class="profile__form" novalidate>
     {{#if editingPassword}}
       <div class="profile__password-inputs-wrapper">
         {{{ oldPasswordProfileInputGroup }}}
-        {{{ newPassword1ProfileInputGroup }}}
-        {{{ newPassword2ProfileInputGroup }}}
+        {{{ passwordProfileInputGroup }}}
+        {{{ password2ProfileInputGroup }}}
       </div>
     {{else}}
       <div class="profile__data-inputs-wrapper">
@@ -31,12 +31,12 @@
       <div class="profile__button-wrapper">
         <button class="profile__button profile__button_type_password" type="button">Изменить пароль</button>
       </div>
-      <a class="profile__button profile__button_type_logout" href="/login.html">Выйти</a>
+      <a class="profile__button profile__button_type_logout" href="login.html">Выйти</a>
     {{/if}}
   </form>
 
   <div class="profile__back">
-    <a class="profile__back-arrow" href="/chats.html"></a>
+    <a class="profile__back-arrow" href="chats.html"></a>
   </div>
 
   {{{ changeImageModal }}}

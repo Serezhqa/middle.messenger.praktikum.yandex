@@ -16,15 +16,3 @@ export const inputHandler = (event: InputEvent) => {
     inputElement.previousElementSibling?.classList.remove('auth-input-group__label_visible');
   }
 };
-
-export const focusHandler = (event: FocusEvent) => {
-  const inputElement = event.target as HTMLInputElement;
-  inputElement.nextElementSibling?.classList.remove('auth-input-group__error_visible');
-};
-
-export const blurHandler = (event: FocusEvent) => {
-  const inputElement = event.target as HTMLInputElement;
-  if (!inputElement.validity.valid) {
-    inputElement.nextElementSibling?.classList.add('auth-input-group__error_visible');
-  }
-};

@@ -15,6 +15,7 @@
     background-color: transparent;
     border-radius: 50%;
     position: relative;
+    font-size: 0;
 
     &::after {
       content: 'Поменять аватар';

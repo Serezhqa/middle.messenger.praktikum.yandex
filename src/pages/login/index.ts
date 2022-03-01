@@ -1,13 +1,10 @@
 import Block from '../../utils/Block';
 import template from './login.hbs';
 import './login.scss';
-import AuthInputGroup, {
-  blurHandler,
-  focusHandler,
-  inputHandler
-} from '../../components/authInputGroup/index';
+import AuthInputGroup, { inputHandler } from '../../components/authInputGroup/index';
 import SubmitButton from '../../components/submitButton';
 import renderDOM from '../../utils/renderDOM';
+import { blurHandler, focusHandler, formSubmitHandler } from '../../utils/validation';
 
 export default class Login extends Block {
   protected initChildren() {
@@ -21,8 +18,8 @@ export default class Login extends Block {
       errorText: 'От 3 до 20 символов, латиница, может содержать цифры, но не состоять из них, допустимы дефис и нижнее подчёркивание',
       events: {
         input: inputHandler,
-        focusin: focusHandler,
-        focusout: blurHandler
+        focusin: (event: FocusEvent) => focusHandler(event, 'auth-input-group__error_visible'),
+        focusout: (event: FocusEvent) => blurHandler(event, 'auth-input-group__error_visible')
       }
     });
 
@@ -36,19 +33,13 @@ export default class Login extends Block {
       errorText: 'От 8 до 40 символов, обязательно хотя бы одна заглавная буква и цифра',
       events: {
         input: inputHandler,
-        focusin: focusHandler,
-        focusout: blurHandler
+        focusin: (event: FocusEvent) => focusHandler(event, 'auth-input-group__error_visible'),
+        focusout: (event: FocusEvent) => blurHandler(event, 'auth-input-group__error_visible')
       }
     });
 
     this.children.submitButton = new SubmitButton({
-      text: 'Авторизоваться',
-      events: {
-        click: (event) => {
-          event.preventDefault();
-          console.log(event);
-        }
-      }
+      text: 'Авторизоваться'
     });
   }
 
@@ -60,3 +51,13 @@ export default class Login extends Block {
 const login = new Login();
 
 renderDOM('.app', login);
+
+const loginForm: HTMLFormElement | null = document.querySelector('.login__form');
+if (loginForm) {
+  loginForm.addEventListener('submit', (event: SubmitEvent) => formSubmitHandler(
+    event,
+    loginForm,
+    '.auth-input-group__input',
+    'auth-input-group__error_visible'
+  ));
+}

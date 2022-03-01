@@ -32,16 +32,16 @@
       {{{ secondMessage }}}
       {{{ ownMessage }}}
     </div>
-    <div class="chats__input-wrapper">
+    <form class="chats__message-form">
       <button class="chats__attachments-button" type="button"></button>
-      <input class="chats__message-input" type="text" name="message" placeholder="Сообщение"/>
-      <button class="chats__send-message-button" type="button"></button>
+      <input class="chats__message-input" type="text" name="message" placeholder="Сообщение" required/>
+      <button class="chats__send-message-button" type="submit"></button>
       <div class="chats__attachments">
         <p class="chats__attachment chats__attachment_type_media-file">Фото или видео</p>
         <p class="chats__attachment chats__attachment_type_file">Файл</p>
         <p class="chats__attachment chats__attachment_type_location">Локация</p>
       </div>
-    </div>
+    </form>
   </div>
 
   {{{ addChatModal }}}

@@ -139,6 +139,8 @@ export default class Block {
   }
 
   _addEvents() {
+    this.addEvents();
+
     const events: Record<string, () => void> = this.props.events;
 
     if (!events) {
@@ -148,6 +150,9 @@ export default class Block {
     Object.entries(events).forEach(([event, listener]) => {
       this._element?.addEventListener(event, listener);
     });
+  }
+
+  protected addEvents() {
   }
 
   _getPropsAndChildren(propsAndChildren: any) {
