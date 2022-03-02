@@ -18,17 +18,17 @@ type RequestOptions = {
   method: Methods;
 };
 
-export default class HTTPTransport {
-  queryStringify(data: Record<string, unknown>) {
-    const keys = Object.keys(data);
-    return keys.reduce((result, key, index) => {
-      return `${result}${key}=${data[key]}${index < keys.length - 1 ? '&' : ''}`;
-    }, '?');
-  }
+function queryStringify(data: Record<string, unknown>) {
+  const keys = Object.keys(data);
+  return keys.reduce((result, key, index) => {
+    return `${result}${key}=${data[key]}${index < keys.length - 1 ? '&' : ''}`;
+  }, '?');
+}
 
+export default class HTTPTransport {
   get(url: string, options: MethodOptions) {
     if (options.data) {
-      url += this.queryStringify(options.data);
+      url += queryStringify(options.data);
     }
 
     return this.request(url, { ...options, method: Methods.GET }, options.timeout);

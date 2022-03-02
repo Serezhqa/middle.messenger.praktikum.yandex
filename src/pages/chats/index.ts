@@ -2,9 +2,9 @@ import Block from '../../utils/Block';
 import template from './chats.hbs';
 import './chats.scss';
 import renderDOM from '../../utils/renderDOM';
-import Modal, { clickHandler, fileInputChangeHandler } from '../../components/modal';
+import Modal from '../../components/modal';
 import SubmitButton from '../../components/submitButton';
-import AuthInputGroup, { inputHandler } from '../../components/authInputGroup';
+import AuthInputGroup from '../../components/authInputGroup';
 import Chat from '../../components/chat';
 import Message from '../../components/message';
 
@@ -60,34 +60,22 @@ export default class Chats extends Block {
         name: 'name',
         placeholder: 'Название',
         type: 'text',
-        errorText: '',
-        events: {
-          input: inputHandler
-        }
+        errorText: 'Заполните поле'
       }),
       button: new SubmitButton({
         text: 'Создать'
-      }),
-      events: {
-        click: clickHandler
-      },
+      })
     });
 
     this.children.addUserModal = new Modal({
       modificator: 'add-user',
       title: 'Добавить пользователя',
       withAuthInputGroup: true,
-      events: {
-        click: clickHandler
-      },
       authInputGroup: new AuthInputGroup({
         name: 'login',
         placeholder: 'Логин',
         type: 'text',
-        errorText: '',
-        events: {
-          input: inputHandler
-        }
+        errorText: 'Заполните поле'
       }),
       button: new SubmitButton({
         text: 'Добавить'
@@ -98,17 +86,11 @@ export default class Chats extends Block {
       modificator: 'remove-user',
       title: 'Удалить пользователя',
       withAuthInputGroup: true,
-      events: {
-        click: clickHandler
-      },
       authInputGroup: new AuthInputGroup({
         name: 'login',
         placeholder: 'Логин',
         type: 'text',
-        errorText: '',
-        events: {
-          input: inputHandler
-        }
+        errorText: 'Заполните поле'
       }),
       button: new SubmitButton({
         text: 'Удалить'
@@ -119,10 +101,6 @@ export default class Chats extends Block {
       modificator: 'change-image',
       title: 'Загрузите файл',
       withFileInput: true,
-      events: {
-        click: clickHandler,
-        change: fileInputChangeHandler
-      },
       button: new SubmitButton({
         text: 'Поменять'
       })
@@ -132,9 +110,6 @@ export default class Chats extends Block {
       modificator: 'delete-chat',
       title: 'Удалить чат?',
       withAuthInputGroup: false,
-      events: {
-        click: clickHandler
-      },
       button: new SubmitButton({
         text: 'Удалить'
       })

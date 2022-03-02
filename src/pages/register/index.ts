@@ -1,17 +1,18 @@
 import Block from '../../utils/Block';
 import template from './register.hbs';
 import './register.scss';
-import AuthInputGroup, { inputHandler } from '../../components/authInputGroup/index';
+import AuthInputGroup from '../../components/authInputGroup/index';
 import SubmitButton from '../../components/submitButton';
 import renderDOM from '../../utils/renderDOM';
 import {
-  blurHandler,
   emailValidation,
+  loginValidation,
   firstNameValidation,
-  focusHandler,
-  formSubmitHandler,
-  loginValidation, password2Validation, passwordValidation, phoneValidation,
-  secondNameValidation
+  secondNameValidation,
+  phoneValidation,
+  passwordValidation,
+  password2Validation,
+  formSubmitHandler
 } from '../../utils/validation';
 
 export default class Register extends Block {
@@ -21,12 +22,7 @@ export default class Register extends Block {
       placeholder: 'Почта',
       type: 'email',
       pattern: emailValidation.pattern,
-      errorText: emailValidation.message,
-      events: {
-        input: inputHandler,
-        focusin: (event: FocusEvent) => focusHandler(event, 'auth-input-group__error_visible'),
-        focusout: (event: FocusEvent) => blurHandler(event, 'auth-input-group__error_visible')
-      }
+      errorText: emailValidation.message
     });
 
     this.children.loginAuthInputGroup = new AuthInputGroup({
@@ -36,12 +32,7 @@ export default class Register extends Block {
       minlength: 3,
       maxlength: 20,
       pattern: loginValidation.pattern,
-      errorText: loginValidation.message,
-      events: {
-        input: inputHandler,
-        focusin: (event: FocusEvent) => focusHandler(event, 'auth-input-group__error_visible'),
-        focusout: (event: FocusEvent) => blurHandler(event, 'auth-input-group__error_visible')
-      }
+      errorText: loginValidation.message
     });
 
     this.children.firstNameAuthInputGroup = new AuthInputGroup({
@@ -49,12 +40,7 @@ export default class Register extends Block {
       placeholder: 'Имя',
       type: 'text',
       pattern: firstNameValidation.pattern,
-      errorText: firstNameValidation.message,
-      events: {
-        input: inputHandler,
-        focusin: (event: FocusEvent) => focusHandler(event, 'auth-input-group__error_visible'),
-        focusout: (event: FocusEvent) => blurHandler(event, 'auth-input-group__error_visible')
-      }
+      errorText: firstNameValidation.message
     });
 
     this.children.secondNameAuthInputGroup = new AuthInputGroup({
@@ -62,12 +48,7 @@ export default class Register extends Block {
       placeholder: 'Фамилия',
       type: 'text',
       pattern: secondNameValidation.pattern,
-      errorText: secondNameValidation.message,
-      events: {
-        input: inputHandler,
-        focusin: (event: FocusEvent) => focusHandler(event, 'auth-input-group__error_visible'),
-        focusout: (event: FocusEvent) => blurHandler(event, 'auth-input-group__error_visible')
-      }
+      errorText: secondNameValidation.message
     });
 
     this.children.phoneAuthInputGroup = new AuthInputGroup({
@@ -77,12 +58,7 @@ export default class Register extends Block {
       minlength: 10,
       maxlength: 15,
       pattern: phoneValidation.pattern,
-      errorText: phoneValidation.message,
-      events: {
-        input: inputHandler,
-        focusin: (event: FocusEvent) => focusHandler(event, 'auth-input-group__error_visible'),
-        focusout: (event: FocusEvent) => blurHandler(event, 'auth-input-group__error_visible')
-      }
+      errorText: phoneValidation.message
     });
 
     this.children.passwordAuthInputGroup = new AuthInputGroup({
@@ -92,12 +68,7 @@ export default class Register extends Block {
       minlength: 8,
       maxlength: 40,
       pattern: passwordValidation.pattern,
-      errorText: passwordValidation.message,
-      events: {
-        input: inputHandler,
-        focusin: (event: FocusEvent) => focusHandler(event, 'auth-input-group__error_visible'),
-        focusout: (event: FocusEvent) => blurHandler(event, 'auth-input-group__error_visible')
-      }
+      errorText: passwordValidation.message
     });
 
     this.children.password2AuthInputGroup = new AuthInputGroup({
@@ -107,12 +78,7 @@ export default class Register extends Block {
       minlength: 8,
       maxlength: 40,
       pattern: password2Validation.pattern,
-      errorText: password2Validation.message,
-      events: {
-        input: inputHandler,
-        focusin: (event: FocusEvent) => focusHandler(event, 'auth-input-group__error_visible'),
-        focusout: (event: FocusEvent) => blurHandler(event, 'auth-input-group__error_visible')
-      }
+      errorText: password2Validation.message
     });
 
     this.children.submitButton = new SubmitButton({

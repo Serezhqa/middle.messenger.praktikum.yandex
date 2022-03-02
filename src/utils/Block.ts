@@ -167,13 +167,13 @@ export default class Block {
     const fragment = this._createDocumentElement('template') as HTMLTemplateElement;
 
     Object.entries(this.children).forEach(([key, child]) => {
-      context[key] = `<div data-id="${child.uuid}"></div>`;
+      context[key] = `<div data-id='${child.uuid}'></div>`;
     });
 
     fragment.innerHTML = template(context);
 
     Object.values(this.children).forEach((child) => {
-      const stub = fragment.content.querySelector(`[data-id="${child.uuid}"]`);
+      const stub = fragment.content.querySelector(`[data-id='${child.uuid}']`);
 
       if (!stub) {
         return;

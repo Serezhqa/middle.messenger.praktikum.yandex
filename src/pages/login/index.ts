@@ -1,12 +1,10 @@
 import Block from '../../utils/Block';
 import template from './login.hbs';
 import './login.scss';
-import AuthInputGroup, { inputHandler } from '../../components/authInputGroup/index';
+import AuthInputGroup from '../../components/authInputGroup/index';
 import SubmitButton from '../../components/submitButton';
 import renderDOM from '../../utils/renderDOM';
-import {
-  blurHandler, focusHandler, formSubmitHandler, loginValidation, passwordValidation
-} from '../../utils/validation';
+import { formSubmitHandler, loginValidation, passwordValidation } from '../../utils/validation';
 
 export default class Login extends Block {
   protected initChildren() {
@@ -17,12 +15,7 @@ export default class Login extends Block {
       minlength: 3,
       maxlength: 20,
       pattern: loginValidation.pattern,
-      errorText: loginValidation.message,
-      events: {
-        input: inputHandler,
-        focusin: (event: FocusEvent) => focusHandler(event, 'auth-input-group__error_visible'),
-        focusout: (event: FocusEvent) => blurHandler(event, 'auth-input-group__error_visible')
-      }
+      errorText: loginValidation.message
     });
 
     this.children.passwordAuthInputGroup = new AuthInputGroup({
@@ -32,12 +25,7 @@ export default class Login extends Block {
       minlength: 8,
       maxlength: 40,
       pattern: passwordValidation.pattern,
-      errorText: passwordValidation.message,
-      events: {
-        input: inputHandler,
-        focusin: (event: FocusEvent) => focusHandler(event, 'auth-input-group__error_visible'),
-        focusout: (event: FocusEvent) => blurHandler(event, 'auth-input-group__error_visible')
-      }
+      errorText: passwordValidation.message
     });
 
     this.children.submitButton = new SubmitButton({

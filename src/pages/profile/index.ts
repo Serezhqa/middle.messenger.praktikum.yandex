@@ -4,14 +4,17 @@ import './profile.scss';
 import renderDOM from '../../utils/renderDOM';
 import ProfileInputGroup from '../../components/profileInputGroup';
 import SubmitButton from '../../components/submitButton';
-import Modal, { clickHandler, fileInputChangeHandler } from '../../components/modal';
+import Modal from '../../components/modal';
 import {
-  blurHandler, displayNameValidation,
   emailValidation,
+  loginValidation,
   firstNameValidation,
-  focusHandler,
-  formSubmitHandler,
-  loginValidation, password2Validation, passwordValidation, phoneValidation, secondNameValidation
+  secondNameValidation,
+  displayNameValidation,
+  phoneValidation,
+  passwordValidation,
+  password2Validation,
+  formSubmitHandler
 } from '../../utils/validation';
 
 export default class Profile extends Block {
@@ -23,11 +26,7 @@ export default class Profile extends Block {
       value: 'pochta@yandex.ru',
       editing: false,
       pattern: emailValidation.pattern,
-      errorText: emailValidation.message,
-      events: {
-        focusin: (event: FocusEvent) => focusHandler(event, 'profile-input-group__error_visible'),
-        focusout: (event: FocusEvent) => blurHandler(event, 'profile-input-group__error_visible')
-      }
+      errorText: emailValidation.message
     });
 
     this.children.loginProfileInputGroup = new ProfileInputGroup({
@@ -39,11 +38,7 @@ export default class Profile extends Block {
       minlength: 3,
       maxlength: 20,
       pattern: loginValidation.pattern,
-      errorText: loginValidation.message,
-      events: {
-        focusin: (event: FocusEvent) => focusHandler(event, 'profile-input-group__error_visible'),
-        focusout: (event: FocusEvent) => blurHandler(event, 'profile-input-group__error_visible')
-      }
+      errorText: loginValidation.message
     });
 
     this.children.firstNameProfileInputGroup = new ProfileInputGroup({
@@ -53,11 +48,7 @@ export default class Profile extends Block {
       value: 'Иван',
       editing: false,
       pattern: firstNameValidation.pattern,
-      errorText: firstNameValidation.message,
-      events: {
-        focusin: (event: FocusEvent) => focusHandler(event, 'profile-input-group__error_visible'),
-        focusout: (event: FocusEvent) => blurHandler(event, 'profile-input-group__error_visible')
-      }
+      errorText: firstNameValidation.message
     });
 
     this.children.secondNameProfileInputGroup = new ProfileInputGroup({
@@ -67,11 +58,7 @@ export default class Profile extends Block {
       value: 'Иванов',
       editing: false,
       pattern: secondNameValidation.pattern,
-      errorText: secondNameValidation.message,
-      events: {
-        focusin: (event: FocusEvent) => focusHandler(event, 'profile-input-group__error_visible'),
-        focusout: (event: FocusEvent) => blurHandler(event, 'profile-input-group__error_visible')
-      }
+      errorText: secondNameValidation.message
     });
 
     this.children.displayNameProfileInputGroup = new ProfileInputGroup({
@@ -81,11 +68,7 @@ export default class Profile extends Block {
       value: 'Иван',
       editing: false,
       pattern: displayNameValidation.pattern,
-      errorText: displayNameValidation.message,
-      events: {
-        focusin: (event: FocusEvent) => focusHandler(event, 'profile-input-group__error_visible'),
-        focusout: (event: FocusEvent) => blurHandler(event, 'profile-input-group__error_visible')
-      }
+      errorText: displayNameValidation.message
     });
 
     this.children.phoneProfileInputGroup = new ProfileInputGroup({
@@ -97,11 +80,7 @@ export default class Profile extends Block {
       minlength: 10,
       maxlength: 15,
       pattern: phoneValidation.pattern,
-      errorText: phoneValidation.message,
-      events: {
-        focusin: (event: FocusEvent) => focusHandler(event, 'profile-input-group__error_visible'),
-        focusout: (event: FocusEvent) => blurHandler(event, 'profile-input-group__error_visible')
-      }
+      errorText: phoneValidation.message
     });
 
     this.children.oldPasswordProfileInputGroup = new ProfileInputGroup({
@@ -113,11 +92,7 @@ export default class Profile extends Block {
       minlength: 8,
       maxlength: 40,
       pattern: passwordValidation.pattern,
-      errorText: passwordValidation.message,
-      events: {
-        focusin: (event: FocusEvent) => focusHandler(event, 'profile-input-group__error_visible'),
-        focusout: (event: FocusEvent) => blurHandler(event, 'profile-input-group__error_visible')
-      }
+      errorText: passwordValidation.message
     });
 
     this.children.passwordProfileInputGroup = new ProfileInputGroup({
@@ -129,11 +104,7 @@ export default class Profile extends Block {
       minlength: 8,
       maxlength: 40,
       pattern: passwordValidation.pattern,
-      errorText: passwordValidation.message,
-      events: {
-        focusin: (event: FocusEvent) => focusHandler(event, 'profile-input-group__error_visible'),
-        focusout: (event: FocusEvent) => blurHandler(event, 'profile-input-group__error_visible')
-      }
+      errorText: passwordValidation.message
     });
 
     this.children.password2ProfileInputGroup = new ProfileInputGroup({
@@ -145,11 +116,7 @@ export default class Profile extends Block {
       minlength: 8,
       maxlength: 40,
       pattern: password2Validation.pattern,
-      errorText: password2Validation.message,
-      events: {
-        focusin: (event: FocusEvent) => focusHandler(event, 'profile-input-group__error_visible'),
-        focusout: (event: FocusEvent) => blurHandler(event, 'profile-input-group__error_visible')
-      }
+      errorText: password2Validation.message
     });
 
     this.children.submitButton = new SubmitButton({
@@ -160,17 +127,13 @@ export default class Profile extends Block {
       modificator: 'change-image',
       title: 'Загрузите файл',
       withFileInput: true,
-      events: {
-        click: clickHandler,
-        change: fileInputChangeHandler
-      },
       button: new SubmitButton({
         text: 'Поменять'
       })
     });
   }
 
-  protected componentDidUpdate(oldProps: any, newProps: any): boolean {
+  protected componentDidUpdate(oldProps: Record<string, unknown>, newProps: Record<string, unknown>): boolean {
     if (oldProps.editing !== newProps.editing) {
       this.children.emailProfileInputGroup.setProps({
         editing: newProps.editing
@@ -210,7 +173,8 @@ export default class Profile extends Block {
         event,
         profileForm,
         '.profile-input-group__input',
-        'profile-input-group__error_visible'
+        'profile-input-group__error_visible',
+        true
       ));
     }
   }
