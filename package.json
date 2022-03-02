@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@anikin/parcel-transformer-handlebars-precompile": "1.0.1",
+    "@parcel/config-default": "2.3.2",
     "@parcel/transformer-sass": "2.3.2",
     "@typescript-eslint/eslint-plugin": "5.12.0",
     "@typescript-eslint/parser": "5.12.0",
