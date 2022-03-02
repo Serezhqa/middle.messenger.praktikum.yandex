@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "parcel static/index.html",
     "build": "parcel build static/index.html",
-    "start": "npm run build && node server.js",
+    "start": "npm install && npm run build && node ./server.js",
     "lint": "npx eslint"
   },
   "repository": {
