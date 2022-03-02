@@ -6,7 +6,7 @@
          placeholder="{{placeholder}}"
          minlength="{{minlength}}"
          maxlength="{{maxlength}}"
-         pattern="{{pattern}}"
+         {{#if pattern}}pattern="{{pattern}}"{{/if}}
          title="{{errorText}}"
          required
   />

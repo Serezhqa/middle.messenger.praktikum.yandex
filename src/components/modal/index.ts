@@ -2,7 +2,21 @@ import Block from '../../utils/Block';
 import template from './modal.hbs';
 import './modal.scss';
 
+type ModalProps = {
+  modificator: string;
+  title: string;
+  withAuthInputGroup?: boolean;
+  authInputGroup?: Block;
+  withFileInput?: boolean;
+  button: Block;
+  events: Record<string, (event: Event) => void>;
+};
+
 export default class Modal extends Block {
+  constructor(props: ModalProps) {
+    super(props);
+  }
+
   render() {
     return this.compile(template, { ...this.props });
   }

@@ -5,7 +5,14 @@ import renderDOM from '../../utils/renderDOM';
 import ProfileInputGroup from '../../components/profileInputGroup';
 import SubmitButton from '../../components/submitButton';
 import Modal, { clickHandler, fileInputChangeHandler } from '../../components/modal';
-import { blurHandler, focusHandler, formSubmitHandler } from '../../utils/validation';
+import {
+  blurHandler, displayNameValidation,
+  emailValidation,
+  firstNameValidation,
+  focusHandler,
+  formSubmitHandler,
+  loginValidation, password2Validation, passwordValidation, phoneValidation, secondNameValidation
+} from '../../utils/validation';
 
 export default class Profile extends Block {
   protected initChildren() {
@@ -15,8 +22,8 @@ export default class Profile extends Block {
       type: 'email',
       value: 'pochta@yandex.ru',
       editing: false,
-      pattern: '[A-Za-z0-9_-]+@[A-Za-z]+\\.[A-Za-z0-9_-]+',
-      errorText: 'Латиница, может включать цифры и спецсимволы вроде дефиса, обязательна @ и точка после, но перед точкой обязательно должны быть буквы',
+      pattern: emailValidation.pattern,
+      errorText: emailValidation.message,
       events: {
         focusin: (event: FocusEvent) => focusHandler(event, 'profile-input-group__error_visible'),
         focusout: (event: FocusEvent) => blurHandler(event, 'profile-input-group__error_visible')
@@ -31,8 +38,8 @@ export default class Profile extends Block {
       editing: false,
       minlength: 3,
       maxlength: 20,
-      pattern: '[a-zA-Z0-9_-]*[a-zA-Z_-][a-zA-Z0-9_-]*',
-      errorText: 'От 3 до 20 символов, латиница, может содержать цифры, но не состоять из них, допустимы дефис и нижнее подчёркивание',
+      pattern: loginValidation.pattern,
+      errorText: loginValidation.message,
       events: {
         focusin: (event: FocusEvent) => focusHandler(event, 'profile-input-group__error_visible'),
         focusout: (event: FocusEvent) => blurHandler(event, 'profile-input-group__error_visible')
@@ -45,8 +52,8 @@ export default class Profile extends Block {
       type: 'text',
       value: 'Иван',
       editing: false,
-      pattern: '[A-ZА-ЯЁ]+[A_Za-zА-Яа-яЁё-]+',
-      errorText: 'Латиница или кириллица, первая буква заглавная, без пробелов и цифр, нет спецсимволов (допустим только дефис)',
+      pattern: firstNameValidation.pattern,
+      errorText: firstNameValidation.message,
       events: {
         focusin: (event: FocusEvent) => focusHandler(event, 'profile-input-group__error_visible'),
         focusout: (event: FocusEvent) => blurHandler(event, 'profile-input-group__error_visible')
@@ -59,8 +66,8 @@ export default class Profile extends Block {
       type: 'text',
       value: 'Иванов',
       editing: false,
-      pattern: '[A-ZА-ЯЁ]+[A_Za-zА-Яа-яЁё-]+',
-      errorText: 'Латиница или кириллица, первая буква заглавная, без пробелов и цифр, нет спецсимволов (допустим только дефис)',
+      pattern: secondNameValidation.pattern,
+      errorText: secondNameValidation.message,
       events: {
         focusin: (event: FocusEvent) => focusHandler(event, 'profile-input-group__error_visible'),
         focusout: (event: FocusEvent) => blurHandler(event, 'profile-input-group__error_visible')
@@ -73,8 +80,8 @@ export default class Profile extends Block {
       type: 'text',
       value: 'Иван',
       editing: false,
-      pattern: '[A-Za-zА-Яа-яЁё0-9_-]+',
-      errorText: 'Заполните поле',
+      pattern: displayNameValidation.pattern,
+      errorText: displayNameValidation.message,
       events: {
         focusin: (event: FocusEvent) => focusHandler(event, 'profile-input-group__error_visible'),
         focusout: (event: FocusEvent) => blurHandler(event, 'profile-input-group__error_visible')
@@ -89,8 +96,8 @@ export default class Profile extends Block {
       editing: false,
       minlength: 10,
       maxlength: 15,
-      pattern: '\\+?[0-9]+',
-      errorText: 'От 10 до 15 символов, состоит из цифр, может начинаться с плюса',
+      pattern: phoneValidation.pattern,
+      errorText: phoneValidation.message,
       events: {
         focusin: (event: FocusEvent) => focusHandler(event, 'profile-input-group__error_visible'),
         focusout: (event: FocusEvent) => blurHandler(event, 'profile-input-group__error_visible')
@@ -105,8 +112,8 @@ export default class Profile extends Block {
       editing: true,
       minlength: 8,
       maxlength: 40,
-      pattern: '(?=.*[A-Z])(?=.*[0-9]).*',
-      errorText: 'От 8 до 40 символов, обязательно хотя бы одна заглавная буква и цифра',
+      pattern: passwordValidation.pattern,
+      errorText: passwordValidation.message,
       events: {
         focusin: (event: FocusEvent) => focusHandler(event, 'profile-input-group__error_visible'),
         focusout: (event: FocusEvent) => blurHandler(event, 'profile-input-group__error_visible')
@@ -121,8 +128,8 @@ export default class Profile extends Block {
       editing: true,
       minlength: 8,
       maxlength: 40,
-      pattern: '(?=.*[A-Z])(?=.*[0-9]).*',
-      errorText: 'От 8 до 40 символов, обязательно хотя бы одна заглавная буква и цифра',
+      pattern: passwordValidation.pattern,
+      errorText: passwordValidation.message,
       events: {
         focusin: (event: FocusEvent) => focusHandler(event, 'profile-input-group__error_visible'),
         focusout: (event: FocusEvent) => blurHandler(event, 'profile-input-group__error_visible')
@@ -137,8 +144,8 @@ export default class Profile extends Block {
       editing: true,
       minlength: 8,
       maxlength: 40,
-      pattern: '(?=.*[A-Z])(?=.*[0-9]).*',
-      errorText: 'Пароли должны совпадать',
+      pattern: password2Validation.pattern,
+      errorText: password2Validation.message,
       events: {
         focusin: (event: FocusEvent) => focusHandler(event, 'profile-input-group__error_visible'),
         focusout: (event: FocusEvent) => blurHandler(event, 'profile-input-group__error_visible')

@@ -4,7 +4,15 @@ import './register.scss';
 import AuthInputGroup, { inputHandler } from '../../components/authInputGroup/index';
 import SubmitButton from '../../components/submitButton';
 import renderDOM from '../../utils/renderDOM';
-import { blurHandler, focusHandler, formSubmitHandler } from '../../utils/validation';
+import {
+  blurHandler,
+  emailValidation,
+  firstNameValidation,
+  focusHandler,
+  formSubmitHandler,
+  loginValidation, password2Validation, passwordValidation, phoneValidation,
+  secondNameValidation
+} from '../../utils/validation';
 
 export default class Register extends Block {
   protected initChildren() {
@@ -12,8 +20,8 @@ export default class Register extends Block {
       name: 'email',
       placeholder: 'Почта',
       type: 'email',
-      pattern: '[A-Za-z0-9_-]+@[A-Za-z]+\\.[A-Za-z0-9_-]+',
-      errorText: 'Латиница, может включать цифры и спецсимволы вроде дефиса, обязательна @ и точка после, но перед точкой обязательно должны быть буквы',
+      pattern: emailValidation.pattern,
+      errorText: emailValidation.message,
       events: {
         input: inputHandler,
         focusin: (event: FocusEvent) => focusHandler(event, 'auth-input-group__error_visible'),
@@ -27,8 +35,8 @@ export default class Register extends Block {
       type: 'text',
       minlength: 3,
       maxlength: 20,
-      pattern: '[a-zA-Z0-9_-]*[a-zA-Z_-][a-zA-Z0-9_-]*',
-      errorText: 'От 3 до 20 символов, латиница, может содержать цифры, но не состоять из них, допустимы дефис и нижнее подчёркивание',
+      pattern: loginValidation.pattern,
+      errorText: loginValidation.message,
       events: {
         input: inputHandler,
         focusin: (event: FocusEvent) => focusHandler(event, 'auth-input-group__error_visible'),
@@ -40,8 +48,8 @@ export default class Register extends Block {
       name: 'first_name',
       placeholder: 'Имя',
       type: 'text',
-      pattern: '[A-ZА-ЯЁ]+[A_Za-zА-Яа-яЁё-]+',
-      errorText: 'Латиница или кириллица, первая буква заглавная, без пробелов и цифр, нет спецсимволов (допустим только дефис)',
+      pattern: firstNameValidation.pattern,
+      errorText: firstNameValidation.message,
       events: {
         input: inputHandler,
         focusin: (event: FocusEvent) => focusHandler(event, 'auth-input-group__error_visible'),
@@ -53,8 +61,8 @@ export default class Register extends Block {
       name: 'second_name',
       placeholder: 'Фамилия',
       type: 'text',
-      pattern: '[A-ZА-ЯЁ]+[A_Za-zА-Яа-яЁё-]+',
-      errorText: 'Латиница или кириллица, первая буква заглавная, без пробелов и цифр, нет спецсимволов (допустим только дефис)',
+      pattern: secondNameValidation.pattern,
+      errorText: secondNameValidation.message,
       events: {
         input: inputHandler,
         focusin: (event: FocusEvent) => focusHandler(event, 'auth-input-group__error_visible'),
@@ -68,8 +76,8 @@ export default class Register extends Block {
       type: 'text',
       minlength: 10,
       maxlength: 15,
-      pattern: '\\+?[0-9]+',
-      errorText: 'От 10 до 15 символов, состоит из цифр, может начинаться с плюса',
+      pattern: phoneValidation.pattern,
+      errorText: phoneValidation.message,
       events: {
         input: inputHandler,
         focusin: (event: FocusEvent) => focusHandler(event, 'auth-input-group__error_visible'),
@@ -83,8 +91,8 @@ export default class Register extends Block {
       type: 'password',
       minlength: 8,
       maxlength: 40,
-      pattern: '(?=.*[A-Z])(?=.*[0-9]).*',
-      errorText: 'От 8 до 40 символов, обязательно хотя бы одна заглавная буква и цифра',
+      pattern: passwordValidation.pattern,
+      errorText: passwordValidation.message,
       events: {
         input: inputHandler,
         focusin: (event: FocusEvent) => focusHandler(event, 'auth-input-group__error_visible'),
@@ -98,8 +106,8 @@ export default class Register extends Block {
       type: 'password',
       minlength: 8,
       maxlength: 40,
-      pattern: '(?=.*[A-Z])(?=.*[0-9]).*',
-      errorText: 'Пароли должны совпадать',
+      pattern: password2Validation.pattern,
+      errorText: password2Validation.message,
       events: {
         input: inputHandler,
         focusin: (event: FocusEvent) => focusHandler(event, 'auth-input-group__error_visible'),

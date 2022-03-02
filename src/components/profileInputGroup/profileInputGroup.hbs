@@ -8,7 +8,7 @@
          {{#unless editing}}disabled{{/unless}}
          minlength="{{minlength}}"
          maxlength="{{maxlength}}"
-         pattern="{{pattern}}"
+         {{#if pattern}}pattern="{{pattern}}"{{/if}}
          title="{{errorText}}"
          required
   />

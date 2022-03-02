@@ -4,7 +4,9 @@ import './login.scss';
 import AuthInputGroup, { inputHandler } from '../../components/authInputGroup/index';
 import SubmitButton from '../../components/submitButton';
 import renderDOM from '../../utils/renderDOM';
-import { blurHandler, focusHandler, formSubmitHandler } from '../../utils/validation';
+import {
+  blurHandler, focusHandler, formSubmitHandler, loginValidation, passwordValidation
+} from '../../utils/validation';
 
 export default class Login extends Block {
   protected initChildren() {
@@ -14,8 +16,8 @@ export default class Login extends Block {
       type: 'text',
       minlength: 3,
       maxlength: 20,
-      pattern: '[a-zA-Z0-9_-]*[a-zA-Z_-][a-zA-Z0-9_-]*',
-      errorText: 'От 3 до 20 символов, латиница, может содержать цифры, но не состоять из них, допустимы дефис и нижнее подчёркивание',
+      pattern: loginValidation.pattern,
+      errorText: loginValidation.message,
       events: {
         input: inputHandler,
         focusin: (event: FocusEvent) => focusHandler(event, 'auth-input-group__error_visible'),
@@ -29,8 +31,8 @@ export default class Login extends Block {
       type: 'password',
       minlength: 8,
       maxlength: 40,
-      pattern: '(?=.*[A-Z])(?=.*[0-9]).*',
-      errorText: 'От 8 до 40 символов, обязательно хотя бы одна заглавная буква и цифра',
+      pattern: passwordValidation.pattern,
+      errorText: passwordValidation.message,
       events: {
         input: inputHandler,
         focusin: (event: FocusEvent) => focusHandler(event, 'auth-input-group__error_visible'),

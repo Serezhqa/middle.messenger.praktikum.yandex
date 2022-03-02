@@ -5,7 +5,7 @@
     <p class="chat__message">{{#if isOwn}}<span class="chat__own-message">Вы: </span>{{/if}}{{lastMessage}}</p>
   </div>
   <div class="chat__time-wrapper">
-    <p class="chat__time">{{time}}</p>
+    <time class="chat__time">{{time}}</time>
     {{#if hasUnread}}
       <p class="chat__counter">4</p>
     {{/if}}
