@@ -1,0 +1,22 @@
+@import '../../variables';
+
+.submit-button {
+  margin-top: auto;
+  padding: 12px 70px;
+  box-sizing: border-box;
+  width: 280px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 13px;
+  border: none;
+  border-radius: 8px;
+  background-color: $color_link;
+  color: $color_button;
+  align-self: center;
+
+  &:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
+}
