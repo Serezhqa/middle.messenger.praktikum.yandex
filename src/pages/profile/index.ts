@@ -1,8 +1,7 @@
 import Block from '../../utils/Block';
 import template from './profile.hbs';
 import './profile.scss';
-import renderDOM from '../../utils/renderDOM';
-import ProfileInputGroup from '../../components/profileInputGroup';
+import ProfileInput from '../../components/profileInput';
 import SubmitButton from '../../components/submitButton';
 import Modal from '../../components/modal';
 import {
@@ -18,8 +17,16 @@ import {
 } from '../../utils/validation';
 
 export default class Profile extends Block {
+  constructor() {
+    super({
+      editingData: false,
+      editingPassword: false,
+      editing: false
+    });
+  }
+
   protected initChildren() {
-    this.children.emailProfileInputGroup = new ProfileInputGroup({
+    this.children.emailProfileInput = new ProfileInput({
       name: 'email',
       text: 'Почта',
       type: 'email',
@@ -29,7 +36,7 @@ export default class Profile extends Block {
       errorText: emailValidation.message
     });
 
-    this.children.loginProfileInputGroup = new ProfileInputGroup({
+    this.children.loginProfileInput = new ProfileInput({
       name: 'login',
       text: 'Логин',
       type: 'text',
@@ -41,7 +48,7 @@ export default class Profile extends Block {
       errorText: loginValidation.message
     });
 
-    this.children.firstNameProfileInputGroup = new ProfileInputGroup({
+    this.children.firstNameProfileInput = new ProfileInput({
       name: 'first_name',
       text: 'Имя',
       type: 'text',
@@ -51,7 +58,7 @@ export default class Profile extends Block {
       errorText: firstNameValidation.message
     });
 
-    this.children.secondNameProfileInputGroup = new ProfileInputGroup({
+    this.children.secondNameProfileInput = new ProfileInput({
       name: 'second_name',
       text: 'Фамилия',
       type: 'text',
@@ -61,7 +68,7 @@ export default class Profile extends Block {
       errorText: secondNameValidation.message
     });
 
-    this.children.displayNameProfileInputGroup = new ProfileInputGroup({
+    this.children.displayNameProfileInput = new ProfileInput({
       name: 'display_name',
       text: 'Имя в чате',
       type: 'text',
@@ -71,7 +78,7 @@ export default class Profile extends Block {
       errorText: displayNameValidation.message
     });
 
-    this.children.phoneProfileInputGroup = new ProfileInputGroup({
+    this.children.phoneProfileInput = new ProfileInput({
       name: 'phone',
       text: 'Телефон',
       type: 'text',
@@ -83,7 +90,7 @@ export default class Profile extends Block {
       errorText: phoneValidation.message
     });
 
-    this.children.oldPasswordProfileInputGroup = new ProfileInputGroup({
+    this.children.oldPasswordProfileInput = new ProfileInput({
       name: 'oldPassword',
       text: 'Старый пароль',
       type: 'password',
@@ -95,7 +102,7 @@ export default class Profile extends Block {
       errorText: passwordValidation.message
     });
 
-    this.children.passwordProfileInputGroup = new ProfileInputGroup({
+    this.children.passwordProfileInput = new ProfileInput({
       name: 'password',
       text: 'Новый пароль',
       type: 'password',
@@ -107,7 +114,7 @@ export default class Profile extends Block {
       errorText: passwordValidation.message
     });
 
-    this.children.password2ProfileInputGroup = new ProfileInputGroup({
+    this.children.password2ProfileInput = new ProfileInput({
       name: 'password2',
       text: 'Повторите новый пароль',
       type: 'password',
@@ -135,22 +142,22 @@ export default class Profile extends Block {
 
   protected componentDidUpdate(oldProps: Record<string, unknown>, newProps: Record<string, unknown>): boolean {
     if (oldProps.editing !== newProps.editing) {
-      this.children.emailProfileInputGroup.setProps({
+      this.children.emailProfileInput.setProps({
         editing: newProps.editing
       });
-      this.children.loginProfileInputGroup.setProps({
+      this.children.loginProfileInput.setProps({
         editing: newProps.editing
       });
-      this.children.firstNameProfileInputGroup.setProps({
+      this.children.firstNameProfileInput.setProps({
         editing: newProps.editing
       });
-      this.children.secondNameProfileInputGroup.setProps({
+      this.children.secondNameProfileInput.setProps({
         editing: newProps.editing
       });
-      this.children.displayNameProfileInputGroup.setProps({
+      this.children.displayNameProfileInput.setProps({
         editing: newProps.editing
       });
-      this.children.phoneProfileInputGroup.setProps({
+      this.children.phoneProfileInput.setProps({
         editing: newProps.editing
       });
     }
@@ -167,6 +174,37 @@ export default class Profile extends Block {
       return;
     }
 
+    const editDataButton = this.element.querySelector('.profile__button_type_data');
+    if (editDataButton) {
+      editDataButton.addEventListener('click', () => {
+        this.setProps({
+          editingData: true,
+          editingPassword: false,
+          editing: true
+        });
+      });
+    }
+
+    const editPasswordButton = this.element.querySelector('.profile__button_type_password');
+    if (editPasswordButton) {
+      editPasswordButton.addEventListener('click', () => {
+        this.setProps({
+          editingData: false,
+          editingPassword: true,
+          editing: true
+        });
+      });
+    }
+
+    const changeImageButton = this.element.querySelector('.profile__image-button');
+    const modal = this.element.querySelector('.modal');
+
+    if (changeImageButton && modal) {
+      changeImageButton.addEventListener('click', () => {
+        modal.classList.add('modal_opened');
+      });
+    }
+
     const profileForm: HTMLFormElement | null = this.element.querySelector('.profile__form');
     if (profileForm) {
       profileForm.addEventListener('submit', (event: SubmitEvent) => formSubmitHandler(
@@ -174,47 +212,8 @@ export default class Profile extends Block {
         profileForm,
         '.profile-input-group__input',
         'profile-input-group__error_visible',
-        true
+        this.props.editingPassword as boolean
       ));
     }
   }
-}
-
-const profile = new Profile({
-  editingData: false,
-  editingPassword: false,
-  editing: false
-});
-
-renderDOM('.app', profile);
-
-const editDataButton = document.querySelector('.profile__button_type_data');
-if (editDataButton) {
-  editDataButton.addEventListener('click', () => {
-    profile.setProps({
-      editingData: true,
-      editingPassword: false,
-      editing: true
-    });
-  });
-}
-
-const editPasswordButton = document.querySelector('.profile__button_type_password');
-if (editPasswordButton) {
-  editPasswordButton.addEventListener('click', () => {
-    profile.setProps({
-      editingData: false,
-      editingPassword: true,
-      editing: true
-    });
-  });
-}
-
-const changeImageButton = document.querySelector('.profile__image-button');
-const modal = document.querySelector('.modal');
-
-if (changeImageButton && modal) {
-  changeImageButton.addEventListener('click', () => {
-    modal.classList.add('modal_opened');
-  });
 }

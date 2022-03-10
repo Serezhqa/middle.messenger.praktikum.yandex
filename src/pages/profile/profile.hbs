@@ -7,18 +7,18 @@
   <form class="profile__form" novalidate>
     {{#if editingPassword}}
       <div class="profile__password-inputs-wrapper">
-        {{{ oldPasswordProfileInputGroup }}}
-        {{{ passwordProfileInputGroup }}}
-        {{{ password2ProfileInputGroup }}}
+        {{{ oldPasswordProfileInput }}}
+        {{{ passwordProfileInput }}}
+        {{{ password2ProfileInput }}}
       </div>
     {{else}}
       <div class="profile__data-inputs-wrapper">
-        {{{ emailProfileInputGroup }}}
-        {{{ loginProfileInputGroup }}}
-        {{{ firstNameProfileInputGroup }}}
-        {{{ secondNameProfileInputGroup }}}
-        {{{ displayNameProfileInputGroup }}}
-        {{{ phoneProfileInputGroup }}}
+        {{{ emailProfileInput }}}
+        {{{ loginProfileInput }}}
+        {{{ firstNameProfileInput }}}
+        {{{ secondNameProfileInput }}}
+        {{{ displayNameProfileInput }}}
+        {{{ phoneProfileInput }}}
       </div>
     {{/if}}
 
@@ -31,12 +31,12 @@
       <div class="profile__button-wrapper">
         <button class="profile__button profile__button_type_password" type="button">Изменить пароль</button>
       </div>
-      <a class="profile__button profile__button_type_logout" href="login.html">Выйти</a>
+      <a class="profile__button profile__button_type_logout" href="/">Выйти</a>
     {{/if}}
   </form>
 
   <div class="profile__back">
-    <a class="profile__back-arrow" href="chats.html"></a>
+    <a class="profile__back-arrow" href="/messenger"></a>
   </div>
 
   {{{ changeImageModal }}}

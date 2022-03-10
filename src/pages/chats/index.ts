@@ -1,10 +1,9 @@
 import Block from '../../utils/Block';
 import template from './chats.hbs';
 import './chats.scss';
-import renderDOM from '../../utils/renderDOM';
 import Modal from '../../components/modal';
 import SubmitButton from '../../components/submitButton';
-import AuthInputGroup from '../../components/authInputGroup';
+import AuthInput from '../../components/authInput';
 import Chat from '../../components/chat';
 import Message from '../../components/message';
 
@@ -55,8 +54,8 @@ export default class Chats extends Block {
     this.children.addChatModal = new Modal({
       modificator: 'add-chat',
       title: 'Создать чат',
-      withAuthInputGroup: true,
-      authInputGroup: new AuthInputGroup({
+      withAuthInput: true,
+      authInput: new AuthInput({
         name: 'name',
         placeholder: 'Название',
         type: 'text',
@@ -70,8 +69,8 @@ export default class Chats extends Block {
     this.children.addUserModal = new Modal({
       modificator: 'add-user',
       title: 'Добавить пользователя',
-      withAuthInputGroup: true,
-      authInputGroup: new AuthInputGroup({
+      withAuthInput: true,
+      authInput: new AuthInput({
         name: 'login',
         placeholder: 'Логин',
         type: 'text',
@@ -85,8 +84,8 @@ export default class Chats extends Block {
     this.children.removeUserModal = new Modal({
       modificator: 'remove-user',
       title: 'Удалить пользователя',
-      withAuthInputGroup: true,
-      authInputGroup: new AuthInputGroup({
+      withAuthInput: true,
+      authInput: new AuthInput({
         name: 'login',
         placeholder: 'Логин',
         type: 'text',
@@ -109,7 +108,7 @@ export default class Chats extends Block {
     this.children.deleteChatModal = new Modal({
       modificator: 'delete-chat',
       title: 'Удалить чат?',
-      withAuthInputGroup: false,
+      withAuthInput: false,
       button: new SubmitButton({
         text: 'Удалить'
       })
@@ -119,80 +118,85 @@ export default class Chats extends Block {
   render() {
     return this.compile(template, {});
   }
-}
 
-const chats = new Chats();
-
-renderDOM('.app', chats);
-
-const optionsButton = document.querySelector('.chats__options-button');
-const options = document.querySelector('.chats__options');
-
-const attachmentsButton = document.querySelector('.chats__attachments-button');
-const attachments = document.querySelector('.chats__attachments');
-
-const addChatButton = document.querySelector('.chats__add-chat-button');
-const addChatModal = document.querySelector('.modal_type_add-chat');
-
-const addUserButton = document.querySelector('.chats__option_type_add-user');
-const removeUserButton = document.querySelector('.chats__option_type_remove-user');
-const changeImageButton = document.querySelector('.chats__option_type_change-image');
-const deleteChatButton = document.querySelector('.chats__option_type_delete-chat');
-const addUserModal = document.querySelector('.modal_type_add-user');
-const removeUserModal = document.querySelector('.modal_type_remove-user');
-const changeImageModal = document.querySelector('.modal_type_change-image');
-const deleteChatModal = document.querySelector('.modal_type_delete-chat');
-
-if (optionsButton && options) {
-  optionsButton.addEventListener('click', () => {
-    optionsButton.classList.toggle('chats__options-button_active');
-
-    if (optionsButton.classList.contains('chats__options-button_active')) {
-      options.classList.add('chats__options_active');
-    } else {
-      options.classList.remove('chats__options_active');
+  protected addEvents() {
+    if (!this.element) {
+      return;
     }
-  });
-}
 
-if (attachmentsButton && attachments) {
-  attachmentsButton.addEventListener('click', () => {
-    attachmentsButton.classList.toggle('chats__attachments-button_active');
+    const optionsButton = this.element.querySelector('.chats__options-button');
+    const options = this.element.querySelector('.chats__options');
 
-    if (attachmentsButton.classList.contains('chats__attachments-button_active')) {
-      attachments.classList.add('chats__attachments_active');
-    } else {
-      attachments.classList.remove('chats__attachments_active');
+    if (optionsButton && options) {
+      optionsButton.addEventListener('click', () => {
+        optionsButton.classList.toggle('chats__options-button_active');
+
+        if (optionsButton.classList.contains('chats__options-button_active')) {
+          options.classList.add('chats__options_active');
+        } else {
+          options.classList.remove('chats__options_active');
+        }
+      });
     }
-  });
-}
 
-if (addChatButton && addChatModal) {
-  addChatButton.addEventListener('click', () => {
-    addChatModal.classList.add('modal_opened');
-  });
-}
+    const attachmentsButton = this.element.querySelector('.chats__attachments-button');
+    const attachments = this.element.querySelector('.chats__attachments');
 
-if (addUserButton && addUserModal) {
-  addUserButton.addEventListener('click', () => {
-    addUserModal.classList.add('modal_opened');
-  });
-}
+    if (attachmentsButton && attachments) {
+      attachmentsButton.addEventListener('click', () => {
+        attachmentsButton.classList.toggle('chats__attachments-button_active');
 
-if (removeUserButton && removeUserModal) {
-  removeUserButton.addEventListener('click', () => {
-    removeUserModal.classList.add('modal_opened');
-  });
-}
+        if (attachmentsButton.classList.contains('chats__attachments-button_active')) {
+          attachments.classList.add('chats__attachments_active');
+        } else {
+          attachments.classList.remove('chats__attachments_active');
+        }
+      });
+    }
 
-if (changeImageButton && changeImageModal) {
-  changeImageButton.addEventListener('click', () => {
-    changeImageModal.classList.add('modal_opened');
-  });
-}
+    const addChatButton = this.element.querySelector('.chats__add-chat-button');
+    const addChatModal = this.element.querySelector('.modal_type_add-chat');
 
-if (deleteChatButton && deleteChatModal) {
-  deleteChatButton.addEventListener('click', () => {
-    deleteChatModal.classList.add('modal_opened');
-  });
+    if (addChatButton && addChatModal) {
+      addChatButton.addEventListener('click', () => {
+        addChatModal.classList.add('modal_opened');
+      });
+    }
+
+    const addUserButton = this.element.querySelector('.chats__option_type_add-user');
+    const addUserModal = this.element.querySelector('.modal_type_add-user');
+
+    if (addUserButton && addUserModal) {
+      addUserButton.addEventListener('click', () => {
+        addUserModal.classList.add('modal_opened');
+      });
+    }
+
+    const removeUserButton = this.element.querySelector('.chats__option_type_remove-user');
+    const removeUserModal = this.element.querySelector('.modal_type_remove-user');
+
+    if (removeUserButton && removeUserModal) {
+      removeUserButton.addEventListener('click', () => {
+        removeUserModal.classList.add('modal_opened');
+      });
+    }
+
+    const changeImageButton = this.element.querySelector('.chats__option_type_change-image');
+    const changeImageModal = this.element.querySelector('.modal_type_change-image');
+
+    if (changeImageButton && changeImageModal) {
+      changeImageButton.addEventListener('click', () => {
+        changeImageModal.classList.add('modal_opened');
+      });
+    }
+
+    const deleteChatButton = this.element.querySelector('.chats__option_type_delete-chat');
+    const deleteChatModal = this.element.querySelector('.modal_type_delete-chat');
+
+    if (deleteChatButton && deleteChatModal) {
+      deleteChatButton.addEventListener('click', () => {
+        deleteChatModal.classList.add('modal_opened');
+      });
+    }
+  }
 }

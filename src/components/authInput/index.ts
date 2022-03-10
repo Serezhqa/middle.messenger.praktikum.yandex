@@ -1,9 +1,9 @@
 import Block from '../../utils/Block';
-import template from './authInputGroup.hbs';
-import './authInputGroup.scss';
+import template from './authInput.hbs';
+import './authInput.scss';
 import { blurHandler, focusHandler } from '../../utils/validation';
 
-type AuthInputGroupProps = {
+type AuthInputProps = {
   name: string;
   placeholder: string;
   type: string;
@@ -14,8 +14,8 @@ type AuthInputGroupProps = {
   events?: Record<string, (event: Event) => void>;
 };
 
-export default class AuthInputGroup extends Block {
-  constructor(props: AuthInputGroupProps) {
+export default class AuthInput extends Block {
+  constructor(props: AuthInputProps) {
     super(props);
   }
 
@@ -24,7 +24,11 @@ export default class AuthInputGroup extends Block {
   }
 
   protected addEvents() {
-    this.getContent()?.addEventListener('input', (event: InputEvent) => {
+    if (!this.element) {
+      return;
+    }
+
+    this.element.addEventListener('input', (event: InputEvent) => {
       const inputElement = event.target as HTMLInputElement;
       inputElement.previousElementSibling?.classList.add('auth-input-group__label_visible');
 
@@ -33,11 +37,11 @@ export default class AuthInputGroup extends Block {
       }
     });
 
-    this.getContent()?.addEventListener('focusin', (event: FocusEvent) => focusHandler(
+    this.element.addEventListener('focusin', (event: FocusEvent) => focusHandler(
       event,
       'auth-input-group__error_visible'
     ));
-    this.getContent()?.addEventListener('focusout', (event: FocusEvent) => blurHandler(
+    this.element.addEventListener('focusout', (event: FocusEvent) => blurHandler(
       event,
       'auth-input-group__error_visible'
     ));

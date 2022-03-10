@@ -1,9 +1,9 @@
 import Block from '../../utils/Block';
-import template from './profileInputGroup.hbs';
-import './profileInputGroup.scss';
+import template from './profileInput.hbs';
+import './profileInput.scss';
 import { blurHandler, focusHandler } from '../../utils/validation';
 
-type ProfileInputGroupProps = {
+type ProfileInputProps = {
   name: string;
   text: string;
   type: string;
@@ -16,8 +16,8 @@ type ProfileInputGroupProps = {
   events?: Record<string, (event: Event) => void>;
 };
 
-export default class ProfileInputGroup extends Block {
-  constructor(props: ProfileInputGroupProps) {
+export default class ProfileInput extends Block {
+  constructor(props: ProfileInputProps) {
     super(props);
   }
 
@@ -26,11 +26,15 @@ export default class ProfileInputGroup extends Block {
   }
 
   protected addEvents() {
-    this.getContent()?.addEventListener('focusin', (event: FocusEvent) => focusHandler(
+    if (!this.element) {
+      return;
+    }
+
+    this.element.addEventListener('focusin', (event: FocusEvent) => focusHandler(
       event,
       'profile-input-group__error_visible'
     ));
-    this.getContent()?.addEventListener('focusout', (event: FocusEvent) => blurHandler(
+    this.element.addEventListener('focusout', (event: FocusEvent) => blurHandler(
       event,
       'profile-input-group__error_visible'
     ));

@@ -65,7 +65,6 @@ export default class Block {
     if (oldProps && newProps) {
       // Эта незамысловатая конструкция чтобы eslint и typescript
       // не орали, что переменные не используются.
-      // В следующем спринте будет что-то адекватное.
     }
     return true;
   }
@@ -183,5 +182,13 @@ export default class Block {
     });
 
     return fragment.content;
+  }
+
+  show() {
+    this.getContent()!.style.display = 'block';
+  }
+
+  hide() {
+    this.getContent()!.style.display = 'none';
   }
 }
