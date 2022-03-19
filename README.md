@@ -11,4 +11,4 @@
 - `npm run start` — запуск локального сервера с раздачей статики из папки dist,
 - `npm run build` — сборка стабильной версии.
 
-#### Pull request: https://github.com/Serezhqa/middle.messenger.praktikum.yandex/pull/4
+#### Pull request: https://github.com/Serezhqa/middle.messenger.praktikum.yandex/pull/5
