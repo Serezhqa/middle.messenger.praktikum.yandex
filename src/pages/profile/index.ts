@@ -1,103 +1,143 @@
 import Block from '../../utils/Block';
 import template from './profile.hbs';
 import './profile.scss';
-import renderDOM from '../../utils/renderDOM';
-import ProfileInputGroup from '../../components/profileInputGroup';
+import ProfileInput from '../../components/profileInput';
 import SubmitButton from '../../components/submitButton';
-import Modal, { clickHandler, fileInputChangeHandler } from '../../components/modal';
-import { blurHandler, focusHandler, formSubmitHandler } from '../../utils/validation';
+import Modal from '../../components/modal';
+import {
+  emailValidation,
+  loginValidation,
+  firstNameValidation,
+  secondNameValidation,
+  displayNameValidation,
+  phoneValidation,
+  passwordValidation,
+  password2Validation,
+  formSubmitHandler
+} from '../../utils/validation';
+import router from '../../utils/Router';
+import AuthController from '../../controllers/AuthController';
+import store, { State, StoreEvents } from '../../utils/Store';
+import { UpdateAvatarFormModel, UpdateUserFormModel, UserModel } from '../../api/models';
+import ProfileController from '../../controllers/ProfileController';
+import isEqual, { PlainObject } from '../../utils/isEqual';
+import mockProfilePicture from '../../images/mock-profile-picture.svg';
+import { baseURL } from '../../api/BaseAPI';
+
+function mapStateToProps(state: State) {
+  return {
+    user: { ...state.user },
+    image: (state.user as UserModel).avatar
+      ? `${baseURL}/resources${(state.user as UserModel).avatar}`
+      : mockProfilePicture,
+    displayName: (state.user as UserModel).display_name || (state.user as UserModel).first_name
+  };
+}
+
+type ProfileProps = {
+  editingData: boolean;
+  editingPassword: boolean;
+  editing: boolean;
+  user: UserModel;
+  image: string;
+  displayName: string;
+};
 
 export default class Profile extends Block {
+  authController = new AuthController();
+
+  profileController = new ProfileController();
+
+  constructor() {
+    super({
+      editingData: false,
+      editingPassword: false,
+      editing: false,
+      user: {},
+      image: mockProfilePicture,
+      displayName: ''
+    });
+
+    store.on(StoreEvents.Updated, () => {
+      this.setProps(mapStateToProps(store.getState()));
+    });
+  }
+
+  protected componentDidMount() {
+    this.setProps(mapStateToProps(store.getState()));
+    this.setProps({
+      editingData: false,
+      editingPassword: false,
+      editing: false
+    });
+  }
+
   protected initChildren() {
-    this.children.emailProfileInputGroup = new ProfileInputGroup({
+    this.children.emailProfileInput = new ProfileInput({
       name: 'email',
       text: 'Почта',
       type: 'email',
-      value: 'pochta@yandex.ru',
+      value: (this.props as ProfileProps).user.email,
       editing: false,
-      pattern: '[A-Za-z0-9_-]+@[A-Za-z]+\\.[A-Za-z0-9_-]+',
-      errorText: 'Латиница, может включать цифры и спецсимволы вроде дефиса, обязательна @ и точка после, но перед точкой обязательно должны быть буквы',
-      events: {
-        focusin: (event: FocusEvent) => focusHandler(event, 'profile-input-group__error_visible'),
-        focusout: (event: FocusEvent) => blurHandler(event, 'profile-input-group__error_visible')
-      }
+      pattern: emailValidation.pattern,
+      errorText: emailValidation.message
     });
 
-    this.children.loginProfileInputGroup = new ProfileInputGroup({
+    this.children.loginProfileInput = new ProfileInput({
       name: 'login',
       text: 'Логин',
       type: 'text',
-      value: 'ivanivanov',
+      value: (this.props as ProfileProps).user.login,
       editing: false,
       minlength: 3,
       maxlength: 20,
-      pattern: '[a-zA-Z0-9_-]*[a-zA-Z_-][a-zA-Z0-9_-]*',
-      errorText: 'От 3 до 20 символов, латиница, может содержать цифры, но не состоять из них, допустимы дефис и нижнее подчёркивание',
-      events: {
-        focusin: (event: FocusEvent) => focusHandler(event, 'profile-input-group__error_visible'),
-        focusout: (event: FocusEvent) => blurHandler(event, 'profile-input-group__error_visible')
-      }
+      pattern: loginValidation.pattern,
+      errorText: loginValidation.message
     });
 
-    this.children.firstNameProfileInputGroup = new ProfileInputGroup({
+    this.children.firstNameProfileInput = new ProfileInput({
       name: 'first_name',
       text: 'Имя',
       type: 'text',
-      value: 'Иван',
+      value: (this.props as ProfileProps).user.first_name,
       editing: false,
-      pattern: '[A-ZА-ЯЁ]+[A_Za-zА-Яа-яЁё-]+',
-      errorText: 'Латиница или кириллица, первая буква заглавная, без пробелов и цифр, нет спецсимволов (допустим только дефис)',
-      events: {
-        focusin: (event: FocusEvent) => focusHandler(event, 'profile-input-group__error_visible'),
-        focusout: (event: FocusEvent) => blurHandler(event, 'profile-input-group__error_visible')
-      }
+      pattern: firstNameValidation.pattern,
+      errorText: firstNameValidation.message
     });
 
-    this.children.secondNameProfileInputGroup = new ProfileInputGroup({
+    this.children.secondNameProfileInput = new ProfileInput({
       name: 'second_name',
       text: 'Фамилия',
       type: 'text',
-      value: 'Иванов',
+      value: (this.props as ProfileProps).user.second_name,
       editing: false,
-      pattern: '[A-ZА-ЯЁ]+[A_Za-zА-Яа-яЁё-]+',
-      errorText: 'Латиница или кириллица, первая буква заглавная, без пробелов и цифр, нет спецсимволов (допустим только дефис)',
-      events: {
-        focusin: (event: FocusEvent) => focusHandler(event, 'profile-input-group__error_visible'),
-        focusout: (event: FocusEvent) => blurHandler(event, 'profile-input-group__error_visible')
-      }
+      pattern: secondNameValidation.pattern,
+      errorText: secondNameValidation.message
     });
 
-    this.children.displayNameProfileInputGroup = new ProfileInputGroup({
+    this.children.displayNameProfileInput = new ProfileInput({
       name: 'display_name',
       text: 'Имя в чате',
       type: 'text',
-      value: 'Иван',
+      value: (this.props as ProfileProps).user.display_name || (this.props as ProfileProps).user.first_name,
       editing: false,
-      pattern: '[A-Za-zА-Яа-яЁё0-9_-]+',
-      errorText: 'Заполните поле',
-      events: {
-        focusin: (event: FocusEvent) => focusHandler(event, 'profile-input-group__error_visible'),
-        focusout: (event: FocusEvent) => blurHandler(event, 'profile-input-group__error_visible')
-      }
+      pattern: displayNameValidation.pattern,
+      errorText: displayNameValidation.message
     });
 
-    this.children.phoneProfileInputGroup = new ProfileInputGroup({
+    this.children.phoneProfileInput = new ProfileInput({
       name: 'phone',
       text: 'Телефон',
       type: 'text',
-      value: '+79091234567',
+      value: (this.props as ProfileProps).user.phone,
       editing: false,
       minlength: 10,
       maxlength: 15,
-      pattern: '\\+?[0-9]+',
-      errorText: 'От 10 до 15 символов, состоит из цифр, может начинаться с плюса',
-      events: {
-        focusin: (event: FocusEvent) => focusHandler(event, 'profile-input-group__error_visible'),
-        focusout: (event: FocusEvent) => blurHandler(event, 'profile-input-group__error_visible')
-      }
+      pattern: phoneValidation.pattern,
+      errorText: phoneValidation.message
     });
 
-    this.children.oldPasswordProfileInputGroup = new ProfileInputGroup({
+    this.children.oldPasswordProfileInput = new ProfileInput({
       name: 'oldPassword',
       text: 'Старый пароль',
       type: 'password',
@@ -105,15 +145,11 @@ export default class Profile extends Block {
       editing: true,
       minlength: 8,
       maxlength: 40,
-      pattern: '(?=.*[A-Z])(?=.*[0-9]).*',
-      errorText: 'От 8 до 40 символов, обязательно хотя бы одна заглавная буква и цифра',
-      events: {
-        focusin: (event: FocusEvent) => focusHandler(event, 'profile-input-group__error_visible'),
-        focusout: (event: FocusEvent) => blurHandler(event, 'profile-input-group__error_visible')
-      }
+      pattern: passwordValidation.pattern,
+      errorText: passwordValidation.message
     });
 
-    this.children.passwordProfileInputGroup = new ProfileInputGroup({
+    this.children.passwordProfileInput = new ProfileInput({
       name: 'password',
       text: 'Новый пароль',
       type: 'password',
@@ -121,15 +157,11 @@ export default class Profile extends Block {
       editing: true,
       minlength: 8,
       maxlength: 40,
-      pattern: '(?=.*[A-Z])(?=.*[0-9]).*',
-      errorText: 'От 8 до 40 символов, обязательно хотя бы одна заглавная буква и цифра',
-      events: {
-        focusin: (event: FocusEvent) => focusHandler(event, 'profile-input-group__error_visible'),
-        focusout: (event: FocusEvent) => blurHandler(event, 'profile-input-group__error_visible')
-      }
+      pattern: passwordValidation.pattern,
+      errorText: passwordValidation.message
     });
 
-    this.children.password2ProfileInputGroup = new ProfileInputGroup({
+    this.children.password2ProfileInput = new ProfileInput({
       name: 'password2',
       text: 'Повторите новый пароль',
       type: 'password',
@@ -137,12 +169,8 @@ export default class Profile extends Block {
       editing: true,
       minlength: 8,
       maxlength: 40,
-      pattern: '(?=.*[A-Z])(?=.*[0-9]).*',
-      errorText: 'Пароли должны совпадать',
-      events: {
-        focusin: (event: FocusEvent) => focusHandler(event, 'profile-input-group__error_visible'),
-        focusout: (event: FocusEvent) => blurHandler(event, 'profile-input-group__error_visible')
-      }
+      pattern: password2Validation.pattern,
+      errorText: password2Validation.message
     });
 
     this.children.submitButton = new SubmitButton({
@@ -153,35 +181,79 @@ export default class Profile extends Block {
       modificator: 'change-image',
       title: 'Загрузите файл',
       withFileInput: true,
-      events: {
-        click: clickHandler,
-        change: fileInputChangeHandler
-      },
       button: new SubmitButton({
         text: 'Поменять'
-      })
+      }),
+      events: {
+        submit: (event: SubmitEvent) => {
+          event.preventDefault();
+
+          const form = event.target as HTMLFormElement;
+          const formData = new FormData(form);
+
+          this.profileController.updateAvatar(formData as unknown as UpdateAvatarFormModel).then(() => {
+            form.reset();
+            this.children.changeImageModal.element?.classList.remove('modal_opened');
+
+            const modalTitleElement = this.element?.querySelector('.modal__title');
+            const labelElement = this.element?.querySelector('.modal__file-label');
+            const filenameElement = this.element?.querySelector('.modal__filename');
+
+            if (modalTitleElement) {
+              modalTitleElement.textContent = 'Загрузите файл';
+            }
+
+            if (filenameElement && labelElement) {
+              labelElement.classList.remove('modal__file-label_hidden');
+              filenameElement.textContent = '';
+              filenameElement.classList.remove('modal__filename_visible');
+            }
+          });
+        }
+      }
     });
   }
 
-  protected componentDidUpdate(oldProps: any, newProps: any): boolean {
+  protected componentDidUpdate(oldProps: Record<string, unknown>, newProps: Record<string, unknown>): boolean {
     if (oldProps.editing !== newProps.editing) {
-      this.children.emailProfileInputGroup.setProps({
+      this.children.emailProfileInput.setProps({
         editing: newProps.editing
       });
-      this.children.loginProfileInputGroup.setProps({
+      this.children.loginProfileInput.setProps({
         editing: newProps.editing
       });
-      this.children.firstNameProfileInputGroup.setProps({
+      this.children.firstNameProfileInput.setProps({
         editing: newProps.editing
       });
-      this.children.secondNameProfileInputGroup.setProps({
+      this.children.secondNameProfileInput.setProps({
         editing: newProps.editing
       });
-      this.children.displayNameProfileInputGroup.setProps({
+      this.children.displayNameProfileInput.setProps({
         editing: newProps.editing
       });
-      this.children.phoneProfileInputGroup.setProps({
+      this.children.phoneProfileInput.setProps({
         editing: newProps.editing
+      });
+    }
+
+    if (!isEqual(oldProps.user as PlainObject, newProps.user as PlainObject)) {
+      this.children.emailProfileInput.setProps({
+        value: (newProps as ProfileProps).user.email
+      });
+      this.children.loginProfileInput.setProps({
+        value: (newProps as ProfileProps).user.login
+      });
+      this.children.firstNameProfileInput.setProps({
+        value: (newProps as ProfileProps).user.first_name
+      });
+      this.children.secondNameProfileInput.setProps({
+        value: (newProps as ProfileProps).user.second_name
+      });
+      this.children.displayNameProfileInput.setProps({
+        value: (this.props as ProfileProps).user.display_name || (this.props as ProfileProps).user.first_name
+      });
+      this.children.phoneProfileInput.setProps({
+        value: (newProps as ProfileProps).user.phone
       });
     }
 
@@ -192,58 +264,82 @@ export default class Profile extends Block {
     return this.compile(template, { ...this.props });
   }
 
-  protected addEvents() {
+  protected afterRender() {
     if (!this.element) {
       return;
     }
 
+    const logoutLink = this.element.querySelector('.profile__button_type_logout');
+    if (logoutLink) {
+      logoutLink.addEventListener('click', () => {
+        this.authController.logout();
+      });
+    }
+
+    const backLink = this.element.querySelector('.profile__back-arrow');
+    if (backLink) {
+      backLink.addEventListener('click', () => {
+        router.go('/messenger');
+      });
+    }
+
+    const editDataButton = this.element.querySelector('.profile__button_type_data');
+    if (editDataButton) {
+      editDataButton.addEventListener('click', () => {
+        this.setProps({
+          editingData: true,
+          editingPassword: false,
+          editing: true
+        });
+      });
+    }
+
+    const editPasswordButton = this.element.querySelector('.profile__button_type_password');
+    if (editPasswordButton) {
+      editPasswordButton.addEventListener('click', () => {
+        this.setProps({
+          editingData: false,
+          editingPassword: true,
+          editing: true
+        });
+      });
+    }
+
+    const changeImageButton = this.element.querySelector('.profile__image-button');
+    const modal = this.element.querySelector('.modal');
+
+    if (changeImageButton && modal) {
+      changeImageButton.addEventListener('click', () => {
+        modal.classList.add('modal_opened');
+      });
+    }
+
     const profileForm: HTMLFormElement | null = this.element.querySelector('.profile__form');
     if (profileForm) {
-      profileForm.addEventListener('submit', (event: SubmitEvent) => formSubmitHandler(
-        event,
-        profileForm,
-        '.profile-input-group__input',
-        'profile-input-group__error_visible'
-      ));
+      profileForm.addEventListener('submit', (event: SubmitEvent) => {
+        const editingPassword = (this.props as ProfileProps).editingPassword;
+        const data = formSubmitHandler(
+          event,
+          'profile-input__error_visible',
+          editingPassword
+        );
+        if (!data) {
+          return;
+        }
+
+        if (editingPassword) {
+          const { oldPassword, password: newPassword } = data;
+          this.profileController.updatePassword({ oldPassword, newPassword });
+        } else {
+          this.profileController.updateUser(data as UpdateUserFormModel);
+        }
+
+        this.setProps({
+          editingData: false,
+          editingPassword: false,
+          editing: false
+        });
+      });
     }
   }
-}
-
-const profile = new Profile({
-  editingData: false,
-  editingPassword: false,
-  editing: false
-});
-
-renderDOM('.app', profile);
-
-const editDataButton = document.querySelector('.profile__button_type_data');
-if (editDataButton) {
-  editDataButton.addEventListener('click', () => {
-    profile.setProps({
-      editingData: true,
-      editingPassword: false,
-      editing: true
-    });
-  });
-}
-
-const editPasswordButton = document.querySelector('.profile__button_type_password');
-if (editPasswordButton) {
-  editPasswordButton.addEventListener('click', () => {
-    profile.setProps({
-      editingData: false,
-      editingPassword: true,
-      editing: true
-    });
-  });
-}
-
-const changeImageButton = document.querySelector('.profile__image-button');
-const modal = document.querySelector('.modal');
-
-if (changeImageButton && modal) {
-  changeImageButton.addEventListener('click', () => {
-    modal.classList.add('modal_opened');
-  });
 }

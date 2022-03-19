@@ -3,45 +3,44 @@
     <div class="chats__menu">
       <div class="chats__wrapper">
         <button class="chats__add-chat-button" type="button"></button>
-        <a class="chats__profile-link" href="profile.html">Профиль ></a>
+        <button class="chats__profile-link" type="button">Профиль ></button>
       </div>
       <input class="chats__search-input" type="text" placeholder="Поиск"/>
     </div>
     <div class="chats__chatlist">
-      {{{ footballChat }}}
-      {{{ musicChat }}}
     </div>
   </div>
 
   <div class="chats__current-chat">
-    <!--      <p class="chats__placeholder">Выберите чат, чтобы отправить сообщение</p>-->
-    <div class="chats__options-wrapper">
-      <img class="chats__current-chat-image" src="https://tinyurl.com/7rumutmn" alt="Аватар чата"/>
-      <p class="chats__current-chat-name">Имя чата</p>
-      <button class="chats__options-button" type="button"></button>
-      <div class="chats__options">
-        <button class="chats__option chats__option_type_add-user" type="button">Добавить пользователя</button>
-        <button class="chats__option chats__option_type_remove-user" type="button">Удалить пользователя</button>
-        <button class="chats__option chats__option_type_change-image" type="button">Изменить аватар чата</button>
-        <button class="chats__option chats__option_type_delete-chat" type="button">Удалить чат</button>
+    {{#unless activeChat.id}}
+      <p class="chats__placeholder">Выберите чат, чтобы отправить сообщение</p>
+    {{/unless}}
+    {{#if activeChat.id}}
+      <div class="chats__options-wrapper">
+        <img class="chats__current-chat-image" src="{{activeChat.image}}" alt="Аватар чата"/>
+        <p class="chats__current-chat-name">{{activeChat.title}}</p>
+        <button class="chats__options-button" type="button"></button>
+        <div class="chats__options">
+          <button class="chats__option chats__option_type_add-user" type="button">Добавить пользователя</button>
+          <button class="chats__option chats__option_type_remove-user" type="button">Удалить пользователя</button>
+          <button class="chats__option chats__option_type_change-image" type="button">Изменить аватар чата</button>
+          <button class="chats__option chats__option_type_delete-chat" type="button">Удалить чат</button>
+        </div>
       </div>
-    </div>
-    <div class="chats__messages">
-      <p class="chats__date">19 февраля</p>
-      {{{ firstMessage }}}
-      {{{ secondMessage }}}
-      {{{ ownMessage }}}
-    </div>
-    <form class="chats__message-form">
-      <button class="chats__attachments-button" type="button"></button>
-      <input class="chats__message-input" type="text" name="message" placeholder="Сообщение" required/>
-      <button class="chats__send-message-button" type="submit"></button>
-      <div class="chats__attachments">
-        <p class="chats__attachment chats__attachment_type_media-file">Фото или видео</p>
-        <p class="chats__attachment chats__attachment_type_file">Файл</p>
-        <p class="chats__attachment chats__attachment_type_location">Локация</p>
+      <div class="chats__messages">
+<!--        <p class="chats__date"></p>-->
       </div>
-    </form>
+      <form class="chats__message-form" novalidate>
+        <button class="chats__attachments-button" type="button"></button>
+        <input class="chats__message-input" type="text" name="message" placeholder="Сообщение" required/>
+        <button class="chats__send-message-button" type="submit"></button>
+        <div class="chats__attachments">
+          <p class="chats__attachment chats__attachment_type_media-file">Фото или видео</p>
+          <p class="chats__attachment chats__attachment_type_file">Файл</p>
+          <p class="chats__attachment chats__attachment_type_location">Локация</p>
+        </div>
+      </form>
+    {{/if}}
   </div>
 
   {{{ addChatModal }}}

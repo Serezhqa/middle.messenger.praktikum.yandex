@@ -3,7 +3,7 @@
 .chat {
   padding: 12px 10px;
   box-sizing: border-box;
-  border-bottom: 1px solid $color_input-group;
+  border-bottom: 1px solid $color_input;
   display: flex;
 
   &:hover {
@@ -65,8 +65,6 @@
   }
 
   &__time {
-    margin-top: 0;
-    margin-bottom: 0;
     color: $color_secondary;
     font-style: normal;
     font-weight: 500;
