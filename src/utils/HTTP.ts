@@ -5,15 +5,15 @@ enum Methods {
   DELETE = 'DELETE'
 }
 
-type MethodOptions = {
+export type MethodOptions = {
   timeout: number;
-  data?: Record<string, unknown>;
+  data?: Record<string, unknown> | string;
   headers?: Record<string, string>;
 };
 
 type RequestOptions = {
   timeout: number;
-  data?: Record<string, unknown>;
+  data?: Record<string, unknown> | string;
   headers?: Record<string, string>;
   method: Methods;
 };
@@ -25,9 +25,9 @@ function queryStringify(data: Record<string, unknown>) {
   }, '?');
 }
 
-export default class HTTPTransport {
+class HTTP {
   get(url: string, options: MethodOptions) {
-    if (options.data) {
+    if (options.data && typeof options.data !== 'string') {
       url += queryStringify(options.data);
     }
 
@@ -52,6 +52,7 @@ export default class HTTPTransport {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       xhr.open(method, url);
+      xhr.withCredentials = true;
 
       Object.keys(headers).forEach((key) => {
         xhr.setRequestHeader(key, headers[key]);
@@ -71,3 +72,5 @@ export default class HTTPTransport {
     });
   }
 }
+
+export default new HTTP();

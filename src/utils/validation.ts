@@ -1,13 +1,12 @@
 export const formSubmitHandler = (
   event: SubmitEvent,
-  form: HTMLFormElement,
-  inputSelector: string,
   errorClass: string,
   hasPasswords?: boolean
 ) => {
   event.preventDefault();
 
-  const inputElements: NodeListOf<HTMLInputElement> = form.querySelectorAll(inputSelector);
+  const form = event.target as HTMLFormElement;
+  const inputElements: NodeListOf<HTMLInputElement> = form.querySelectorAll('input');
   let formIsInvalid = false;
 
   inputElements.forEach((inputElement) => {
@@ -33,9 +32,12 @@ export const formSubmitHandler = (
 
     inputElements.forEach((inputElement) => {
       data[inputElement.name] = inputElement.value;
+      inputElement.blur();
     });
 
-    console.log(data);
+    form.reset();
+
+    return data;
   }
 };
 
@@ -90,6 +92,6 @@ export const phoneValidation = {
 };
 
 export const displayNameValidation = {
-  pattern: '[A-Za-zА-Яа-яЁё0-9_-]+',
+  pattern: '[A-Za-zА-Яа-яЁё0-9_ -]+',
   message: 'Заполните поле'
 };

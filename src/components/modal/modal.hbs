@@ -1,5 +1,5 @@
 <div class="modal modal_type_{{modificator}}">
-  <form class="modal__form">
+  <form class="modal__form" novalidate>
     <h2 class="modal__title">{{title}}</h2>
     {{#if withAuthInput}}
       <div class="modal__content">
@@ -9,7 +9,7 @@
     {{#if withFileInput}}
       <label class="modal__file-label" for="modal__file-input">Выбрать файл на компьютере</label>
       <p class="modal__filename"></p>
-      <input class="modal__file-input" id="modal__file-input" type="file" name="image"/>
+      <input class="modal__file-input" id="modal__file-input" type="file" name="avatar"/>
     {{/if}}
     {{{ button }}}
   </form>

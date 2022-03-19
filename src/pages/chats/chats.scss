@@ -13,7 +13,7 @@
   }
 
   &__menu {
-    border-bottom: 1px solid $color_input-group;
+    border-bottom: 1px solid $color_input;
     display: flex;
     flex-direction: column;
     padding: 10px 10px 14px;
@@ -44,9 +44,12 @@
 
   &__profile-link {
     color: $color_secondary;
-    text-decoration: none;
+    padding: 0;
+    background-color: transparent;
+    border: none;
 
     &:hover {
+      cursor: pointer;
       opacity: 0.5;
     }
   }
@@ -103,7 +106,7 @@
     padding-right: 11px;
     padding-bottom: 10px;
     box-sizing: border-box;
-    border-bottom: 1px solid $color_input-group;
+    border-bottom: 1px solid $color_input;
     position: relative;
   }
 
@@ -146,6 +149,7 @@
 
   &__options {
     visibility: hidden;
+    background-color: $background-color_main;
     width: 210px;
     height: 163px;
     box-shadow: 0 0 6px rgb(0 0 0 / 14%);
@@ -206,7 +210,7 @@
   &__message-form {
     padding-top: 11px;
     box-sizing: border-box;
-    border-top: 1px solid $color_input-group;
+    border-top: 1px solid $color_input;
     display: flex;
     align-items: center;
     position: relative;
@@ -234,6 +238,7 @@
 
   &__attachments {
     visibility: hidden;
+    background-color: $background-color_main;
     width: 162px;
     height: 128px;
     box-shadow: 0 0 6px rgb(0 0 0 / 14%);
@@ -262,7 +267,7 @@
 
     &:hover {
       cursor: pointer;
-      opacity: 0.8;
+      opacity: 0.5;
     }
 
     &:last-of-type {
@@ -336,7 +341,7 @@
 
     &:hover {
       cursor: pointer;
-      opacity: 0.8;
+      opacity: 0.5;
     }
   }
 }

@@ -3,12 +3,15 @@ import template from './chat.hbs';
 import './chat.scss';
 
 type ChatProps = {
+  isActive: boolean;
   image: string;
   chatName: string;
   isOwn: boolean;
-  lastMessage: string;
-  time: string;
-  hasUnread: boolean;
+  lastMessage: string | undefined;
+  time: string | undefined;
+  unreadCount: number;
+  id: number;
+  events: Record<string, (event: Event) => void>;
 };
 
 export default class Chat extends Block {

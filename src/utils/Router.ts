@@ -2,18 +2,15 @@ import Block from './Block';
 import Route from './Route';
 
 class Router {
-  private routes: any[];
+  private routes: Route[];
 
   private history: History;
-
-  private _currentRoute: Route | null;
 
   private readonly _rootQuery: string;
 
   constructor(rootQuery: string) {
     this.routes = [];
     this.history = window.history;
-    this._currentRoute = null;
     this._rootQuery = rootQuery;
   }
 
@@ -27,7 +24,7 @@ class Router {
   start() {
     window.onpopstate = (event: PopStateEvent) => {
       const currentTarget = event.currentTarget as unknown as { location: { pathname: string } };
-      this._onRoute(currentTarget?.location.pathname);
+      this._onRoute(currentTarget.location.pathname);
     };
 
     this._onRoute(window.location.pathname);
@@ -41,11 +38,6 @@ class Router {
       return;
     }
 
-    if (this._currentRoute) {
-      this._currentRoute.leave();
-    }
-
-    this._currentRoute = route;
     route.render();
   }
 

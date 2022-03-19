@@ -23,27 +23,27 @@ export default class AuthInput extends Block {
     return this.compile(template, { ...this.props });
   }
 
-  protected addEvents() {
+  protected afterRender() {
     if (!this.element) {
       return;
     }
 
     this.element.addEventListener('input', (event: InputEvent) => {
       const inputElement = event.target as HTMLInputElement;
-      inputElement.previousElementSibling?.classList.add('auth-input-group__label_visible');
+      inputElement.previousElementSibling?.classList.add('auth-input__label_visible');
 
       if (inputElement.value === '') {
-        inputElement.previousElementSibling?.classList.remove('auth-input-group__label_visible');
+        inputElement.previousElementSibling?.classList.remove('auth-input__label_visible');
       }
     });
 
     this.element.addEventListener('focusin', (event: FocusEvent) => focusHandler(
       event,
-      'auth-input-group__error_visible'
+      'auth-input__error_visible'
     ));
     this.element.addEventListener('focusout', (event: FocusEvent) => blurHandler(
       event,
-      'auth-input-group__error_visible'
+      'auth-input__error_visible'
     ));
   }
 }

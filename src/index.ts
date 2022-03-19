@@ -5,6 +5,11 @@ import Register from './pages/register';
 import Chats from './pages/chats';
 import Profile from './pages/profile';
 import ErrorPage from './components/errorPage';
+import AuthController from './controllers/AuthController';
+import ChatsController from './controllers/ChatsController';
+
+const authController = new AuthController();
+const chatsController = new ChatsController();
 
 router
   .use('/', Login)
@@ -20,3 +25,6 @@ router
     text: 'Мы уже фиксим'
   })
   .start();
+
+authController.getUser()
+  .then(() => chatsController.getChats());

@@ -4,8 +4,13 @@ import './login.scss';
 import AuthInput from '../../components/authInput/index';
 import SubmitButton from '../../components/submitButton';
 import { formSubmitHandler, loginValidation, passwordValidation } from '../../utils/validation';
+import router from '../../utils/Router';
+import { LoginFormModel } from '../../api/models';
+import AuthController from '../../controllers/AuthController';
 
 export default class Login extends Block {
+  authController = new AuthController();
+
   protected initChildren() {
     this.children.loginAuthInput = new AuthInput({
       name: 'login',
@@ -36,19 +41,30 @@ export default class Login extends Block {
     return this.compile(template, {});
   }
 
-  protected addEvents() {
+  protected afterRender() {
     if (!this.element) {
       return;
     }
 
+    const loginLink = this.element.querySelector('.login__link');
+    if (loginLink) {
+      loginLink.addEventListener('click', () => {
+        router.go('/sign-up');
+      });
+    }
+
     const loginForm: HTMLFormElement | null = this.element.querySelector('.login__form');
     if (loginForm) {
-      loginForm.addEventListener('submit', (event: SubmitEvent) => formSubmitHandler(
-        event,
-        loginForm,
-        '.auth-input-group__input',
-        'auth-input-group__error_visible'
-      ));
+      loginForm.addEventListener('submit', (event: SubmitEvent) => {
+        const loginData = formSubmitHandler(
+          event,
+          'auth-input__error_visible'
+        );
+        if (!loginData) {
+          return;
+        }
+        this.authController.login(loginData as LoginFormModel);
+      });
     }
   }
 }

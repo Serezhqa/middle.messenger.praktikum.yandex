@@ -15,10 +15,57 @@ import {
   password2Validation,
   formSubmitHandler
 } from '../../utils/validation';
+import router from '../../utils/Router';
+import AuthController from '../../controllers/AuthController';
+import store, { State, StoreEvents } from '../../utils/Store';
+import { UpdateAvatarFormModel, UpdateUserFormModel, UserModel } from '../../api/models';
+import ProfileController from '../../controllers/ProfileController';
+import isEqual, { PlainObject } from '../../utils/isEqual';
+import mockProfilePicture from '../../images/mock-profile-picture.svg';
+import { baseURL } from '../../api/BaseAPI';
+
+function mapStateToProps(state: State) {
+  return {
+    user: { ...state.user },
+    image: (state.user as UserModel).avatar
+      ? `${baseURL}/resources${(state.user as UserModel).avatar}`
+      : mockProfilePicture,
+    displayName: (state.user as UserModel).display_name || (state.user as UserModel).first_name
+  };
+}
+
+type ProfileProps = {
+  editingData: boolean;
+  editingPassword: boolean;
+  editing: boolean;
+  user: UserModel;
+  image: string;
+  displayName: string;
+};
 
 export default class Profile extends Block {
+  authController = new AuthController();
+
+  profileController = new ProfileController();
+
   constructor() {
     super({
+      editingData: false,
+      editingPassword: false,
+      editing: false,
+      user: {},
+      image: mockProfilePicture,
+      displayName: ''
+    });
+
+    store.on(StoreEvents.Updated, () => {
+      this.setProps(mapStateToProps(store.getState()));
+    });
+  }
+
+  protected componentDidMount() {
+    this.setProps(mapStateToProps(store.getState()));
+    this.setProps({
       editingData: false,
       editingPassword: false,
       editing: false
@@ -30,7 +77,7 @@ export default class Profile extends Block {
       name: 'email',
       text: 'Почта',
       type: 'email',
-      value: 'pochta@yandex.ru',
+      value: (this.props as ProfileProps).user.email,
       editing: false,
       pattern: emailValidation.pattern,
       errorText: emailValidation.message
@@ -40,7 +87,7 @@ export default class Profile extends Block {
       name: 'login',
       text: 'Логин',
       type: 'text',
-      value: 'ivanivanov',
+      value: (this.props as ProfileProps).user.login,
       editing: false,
       minlength: 3,
       maxlength: 20,
@@ -52,7 +99,7 @@ export default class Profile extends Block {
       name: 'first_name',
       text: 'Имя',
       type: 'text',
-      value: 'Иван',
+      value: (this.props as ProfileProps).user.first_name,
       editing: false,
       pattern: firstNameValidation.pattern,
       errorText: firstNameValidation.message
@@ -62,7 +109,7 @@ export default class Profile extends Block {
       name: 'second_name',
       text: 'Фамилия',
       type: 'text',
-      value: 'Иванов',
+      value: (this.props as ProfileProps).user.second_name,
       editing: false,
       pattern: secondNameValidation.pattern,
       errorText: secondNameValidation.message
@@ -72,7 +119,7 @@ export default class Profile extends Block {
       name: 'display_name',
       text: 'Имя в чате',
       type: 'text',
-      value: 'Иван',
+      value: (this.props as ProfileProps).user.display_name || (this.props as ProfileProps).user.first_name,
       editing: false,
       pattern: displayNameValidation.pattern,
       errorText: displayNameValidation.message
@@ -82,7 +129,7 @@ export default class Profile extends Block {
       name: 'phone',
       text: 'Телефон',
       type: 'text',
-      value: '+79091234567',
+      value: (this.props as ProfileProps).user.phone,
       editing: false,
       minlength: 10,
       maxlength: 15,
@@ -136,7 +183,34 @@ export default class Profile extends Block {
       withFileInput: true,
       button: new SubmitButton({
         text: 'Поменять'
-      })
+      }),
+      events: {
+        submit: (event: SubmitEvent) => {
+          event.preventDefault();
+
+          const form = event.target as HTMLFormElement;
+          const formData = new FormData(form);
+
+          this.profileController.updateAvatar(formData as unknown as UpdateAvatarFormModel).then(() => {
+            form.reset();
+            this.children.changeImageModal.element?.classList.remove('modal_opened');
+
+            const modalTitleElement = this.element?.querySelector('.modal__title');
+            const labelElement = this.element?.querySelector('.modal__file-label');
+            const filenameElement = this.element?.querySelector('.modal__filename');
+
+            if (modalTitleElement) {
+              modalTitleElement.textContent = 'Загрузите файл';
+            }
+
+            if (filenameElement && labelElement) {
+              labelElement.classList.remove('modal__file-label_hidden');
+              filenameElement.textContent = '';
+              filenameElement.classList.remove('modal__filename_visible');
+            }
+          });
+        }
+      }
     });
   }
 
@@ -162,6 +236,27 @@ export default class Profile extends Block {
       });
     }
 
+    if (!isEqual(oldProps.user as PlainObject, newProps.user as PlainObject)) {
+      this.children.emailProfileInput.setProps({
+        value: (newProps as ProfileProps).user.email
+      });
+      this.children.loginProfileInput.setProps({
+        value: (newProps as ProfileProps).user.login
+      });
+      this.children.firstNameProfileInput.setProps({
+        value: (newProps as ProfileProps).user.first_name
+      });
+      this.children.secondNameProfileInput.setProps({
+        value: (newProps as ProfileProps).user.second_name
+      });
+      this.children.displayNameProfileInput.setProps({
+        value: (this.props as ProfileProps).user.display_name || (this.props as ProfileProps).user.first_name
+      });
+      this.children.phoneProfileInput.setProps({
+        value: (newProps as ProfileProps).user.phone
+      });
+    }
+
     return super.componentDidUpdate(oldProps, newProps);
   }
 
@@ -169,9 +264,23 @@ export default class Profile extends Block {
     return this.compile(template, { ...this.props });
   }
 
-  protected addEvents() {
+  protected afterRender() {
     if (!this.element) {
       return;
+    }
+
+    const logoutLink = this.element.querySelector('.profile__button_type_logout');
+    if (logoutLink) {
+      logoutLink.addEventListener('click', () => {
+        this.authController.logout();
+      });
+    }
+
+    const backLink = this.element.querySelector('.profile__back-arrow');
+    if (backLink) {
+      backLink.addEventListener('click', () => {
+        router.go('/messenger');
+      });
     }
 
     const editDataButton = this.element.querySelector('.profile__button_type_data');
@@ -207,13 +316,30 @@ export default class Profile extends Block {
 
     const profileForm: HTMLFormElement | null = this.element.querySelector('.profile__form');
     if (profileForm) {
-      profileForm.addEventListener('submit', (event: SubmitEvent) => formSubmitHandler(
-        event,
-        profileForm,
-        '.profile-input-group__input',
-        'profile-input-group__error_visible',
-        this.props.editingPassword as boolean
-      ));
+      profileForm.addEventListener('submit', (event: SubmitEvent) => {
+        const editingPassword = (this.props as ProfileProps).editingPassword;
+        const data = formSubmitHandler(
+          event,
+          'profile-input__error_visible',
+          editingPassword
+        );
+        if (!data) {
+          return;
+        }
+
+        if (editingPassword) {
+          const { oldPassword, password: newPassword } = data;
+          this.profileController.updatePassword({ oldPassword, newPassword });
+        } else {
+          this.profileController.updateUser(data as UpdateUserFormModel);
+        }
+
+        this.setProps({
+          editingData: false,
+          editingPassword: false,
+          editing: false
+        });
+      });
     }
   }
 }

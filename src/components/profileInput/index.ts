@@ -25,18 +25,18 @@ export default class ProfileInput extends Block {
     return this.compile(template, { ...this.props });
   }
 
-  protected addEvents() {
+  protected afterRender() {
     if (!this.element) {
       return;
     }
 
     this.element.addEventListener('focusin', (event: FocusEvent) => focusHandler(
       event,
-      'profile-input-group__error_visible'
+      'profile-input__error_visible'
     ));
     this.element.addEventListener('focusout', (event: FocusEvent) => blurHandler(
       event,
-      'profile-input-group__error_visible'
+      'profile-input__error_visible'
     ));
   }
 }

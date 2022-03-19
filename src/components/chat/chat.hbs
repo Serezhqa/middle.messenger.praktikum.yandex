@@ -1,4 +1,4 @@
-<div class="chat">
+<div class="chat {{#if isActive}}chat_active{{/if}}">
   <img class="chat__image" src="{{image}}" alt="Аватар чата"/>
   <div class="chat__message-wrapper">
     <p class="chat__name">{{chatName}}</p>
@@ -6,8 +6,8 @@
   </div>
   <div class="chat__time-wrapper">
     <time class="chat__time">{{time}}</time>
-    {{#if hasUnread}}
-      <p class="chat__counter">4</p>
+    {{#if unreadCount}}
+      <p class="chat__counter">{{unreadCount}}</p>
     {{/if}}
   </div>
 </div>

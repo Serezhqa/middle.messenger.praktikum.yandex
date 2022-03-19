@@ -1,11 +1,11 @@
 @import '../../variables';
 
-.profile-input-group {
+.profile-input {
   display: flex;
   justify-content: space-between;
   padding-bottom: 10px;
   box-sizing: border-box;
-  border-bottom: 1px solid $color_input-group;
+  border-bottom: 1px solid $color_input;
   margin-bottom: 10px;
   flex-wrap: wrap;
 
@@ -21,6 +21,7 @@
     font-size: 13px;
     line-height: 13px;
     margin-right: auto;
+    width: 49%;
   }
 
   &__input {
@@ -32,6 +33,7 @@
     border: none;
     text-align: right;
     background-color: transparent;
+    width: 50%;
   }
 
   &__error {

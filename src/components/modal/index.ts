@@ -21,7 +21,7 @@ export default class Modal extends Block {
     return this.compile(template, { ...this.props });
   }
 
-  protected addEvents() {
+  protected afterRender() {
     if (!this.element) {
       return;
     }

@@ -21,18 +21,6 @@ export default class Route {
     this._props = rest;
   }
 
-  navigate(pathname: string) {
-    if (this._pathname === pathname) {
-      this.render();
-    }
-  }
-
-  leave() {
-    if (this._block) {
-      this._block.hide();
-    }
-  }
-
   match(pathname: string): boolean {
     return this._pathname === pathname;
   }
@@ -44,6 +32,6 @@ export default class Route {
       return;
     }
 
-    this._block.show();
+    renderDOM(this._rootQuery, this._block);
   }
 }

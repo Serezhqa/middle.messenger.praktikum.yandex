@@ -13,8 +13,13 @@ import {
   password2Validation,
   formSubmitHandler
 } from '../../utils/validation';
+import AuthController from '../../controllers/AuthController';
+import { RegisterFormModel } from '../../api/models';
+import router from '../../utils/Router';
 
 export default class Register extends Block {
+  authController = new AuthController();
+
   protected initChildren() {
     this.children.emailAuthInput = new AuthInput({
       name: 'email',
@@ -89,20 +94,32 @@ export default class Register extends Block {
     return this.compile(template, {});
   }
 
-  protected addEvents() {
+  protected afterRender() {
     if (!this.element) {
       return;
     }
 
+    const registerLink = this.element.querySelector('.register__link');
+    if (registerLink) {
+      registerLink.addEventListener('click', () => {
+        router.go('/');
+      });
+    }
+
     const registerForm: HTMLFormElement | null = this.element.querySelector('.register__form');
     if (registerForm) {
-      registerForm.addEventListener('submit', (event: SubmitEvent) => formSubmitHandler(
-        event,
-        registerForm,
-        '.auth-input-group__input',
-        'auth-input-group__error_visible',
-        true
-      ));
+      registerForm.addEventListener('submit', (event: SubmitEvent) => {
+        const registerData = formSubmitHandler(
+          event,
+          'auth-input__error_visible',
+          true
+        );
+        if (!registerData) {
+          return;
+        }
+        delete registerData?.password2;
+        this.authController.register(registerData as RegisterFormModel);
+      });
     }
   }
 }
