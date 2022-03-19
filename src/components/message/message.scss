@@ -1,0 +1,35 @@
+@import '../../variables';
+
+.message {
+  margin-top: 0;
+  margin-bottom: 10px;
+  padding: 11px;
+  box-sizing: border-box;
+  background-color: $background-color_message;
+  max-width: 43%;
+  width: fit-content;
+  border-radius: 0 20px 20px;
+  white-space: pre-line;
+  display: flex;
+  flex-direction: column;
+
+  &_own {
+    margin-left: auto;
+    margin-right: 10px;
+    background-color: $background-color_active-chat;
+    border-radius: 20px 20px 0;
+  }
+
+  &__time {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 9px;
+    line-height: 9px;
+    color: $color_secondary;
+    align-self: end;
+
+    &_own {
+      color: $color_link;
+    }
+  }
+}

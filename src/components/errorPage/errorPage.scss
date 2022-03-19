@@ -1,0 +1,33 @@
+@import '../../variables';
+@import '../../mixins';
+
+.error-page {
+  @include content_centered;
+
+  &__title {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 40px;
+    line-height: 40px;
+  }
+
+  &__text {
+    margin-top: 0;
+    margin-bottom: 69px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 20px;
+  }
+
+  &__link {
+    color: $color_link;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 11px;
+    text-decoration: none;
+  }
+}

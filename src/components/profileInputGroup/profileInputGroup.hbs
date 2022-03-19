@@ -1,0 +1,16 @@
+<div class="profile-input-group">
+  <label class="profile-input-group__label" for="profile-input-group__input_type_{{name}}">{{text}}</label>
+  <input class="profile-input-group__input" id="profile-input-group__input_type_{{name}}"
+         type="{{type}}"
+         name="{{name}}"
+         value="{{value}}"
+         placeholder="{{text}}"
+         {{#unless editing}}disabled{{/unless}}
+         minlength="{{minlength}}"
+         maxlength="{{maxlength}}"
+         {{#if pattern}}pattern="{{pattern}}"{{/if}}
+         title="{{errorText}}"
+         required
+  />
+  <span class="profile-input-group__error">{{errorText}}</span>
+</div>
