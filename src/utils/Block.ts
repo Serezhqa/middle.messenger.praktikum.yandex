@@ -63,11 +63,7 @@ export default class Block {
   }
 
   protected componentDidUpdate(oldProps: Record<string, unknown>, newProps: Record<string, unknown>) {
-    if (isEqual(oldProps, newProps)) {
-      return false;
-    }
-
-    return true;
+    return !isEqual(oldProps, newProps);
   }
 
   setProps = (newProps: Record<string, unknown>) => {
@@ -121,20 +117,18 @@ export default class Block {
   }
 
   private _makePropsProxy(props: Record<string, unknown>) {
-    const self = this;
-
     return new Proxy(props, {
-      get(target: Record<string, unknown>, prop: string) {
+      get: (target: Record<string, unknown>, prop: string) => {
         const value = target[prop];
         return typeof value === 'function' ? value.bind(target) : value;
       },
-      set(target: Record<string, unknown>, prop: string, value: unknown) {
+      set: (target: Record<string, unknown>, prop: string, value: unknown) => {
         const oldProps = { ...target };
         target[prop] = value;
-        self.eventBus.emit(Block.EVENTS.FLOW_CDU, oldProps, target);
+        this.eventBus.emit(Block.EVENTS.FLOW_CDU, oldProps, target);
         return true;
       },
-      deleteProperty() {
+      deleteProperty: () => {
         throw new Error('Нет доступа');
       }
     });

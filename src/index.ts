@@ -25,3 +25,6 @@ router
 
 authController.getUser()
   .then(() => chatsController.getChats());
+
+// TODO:
+// Заменить .then() на async/await
