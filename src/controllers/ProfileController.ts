@@ -1,19 +1,11 @@
-import UpdateUserAPI from '../api/profile/UpdateUserAPI';
 import { UpdateAvatarFormModel, UpdatePasswordFormModel, UpdateUserFormModel } from '../api/models';
 import store from '../utils/Store';
-import UpdatePasswordAPI from '../api/profile/UpdatePasswordAPI';
-import UpdateAvatarAPI from '../api/profile/UpdateAvatarAPI';
+import profileAPI from '../api/ProfileAPI';
 
-export default class ProfileController {
-  updateUserAPI = new UpdateUserAPI();
-
-  updatePasswordAPI = new UpdatePasswordAPI();
-
-  updateAvatarAPI = new UpdateAvatarAPI();
-
+class ProfileController {
   async updateUser(updateUserData: UpdateUserFormModel) {
     try {
-      this.updateUserAPI.update(updateUserData)
+      profileAPI.updateUser(updateUserData)
         .then((response: XMLHttpRequest) => {
           if (response.status === 200) {
             store.set('user', JSON.parse(response.response));
@@ -26,7 +18,7 @@ export default class ProfileController {
 
   async updatePassword(updatePasswordData: UpdatePasswordFormModel) {
     try {
-      this.updatePasswordAPI.update(updatePasswordData);
+      profileAPI.updatePassword(updatePasswordData);
     } catch (error) {
       console.log(error);
     }
@@ -34,7 +26,7 @@ export default class ProfileController {
 
   async updateAvatar(updateAvatarData: UpdateAvatarFormModel) {
     try {
-      this.updateAvatarAPI.update(updateAvatarData)
+      profileAPI.updateAvatar(updateAvatarData)
         .then((response: XMLHttpRequest) => {
           if (response.status === 200) {
             store.set('user', JSON.parse(response.response));
@@ -45,3 +37,5 @@ export default class ProfileController {
     }
   }
 }
+
+export default new ProfileController();

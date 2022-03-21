@@ -14,13 +14,13 @@ import {
   UserModel,
   WebSocketMessageModel
 } from '../../api/models';
-import ChatsController from '../../controllers/ChatsController';
 import store, { State, StoreEvents } from '../../utils/Store';
 import Chat from '../../components/chat';
 import mockChatImage from '../../images/mock-chat-image.svg';
 import WebSocketAPI from '../../api/WebSocketAPI';
 import Message from '../../components/message';
 import getTime from '../../utils/getTime';
+import chatsController from '../../controllers/ChatsController';
 
 function mapStateToProps(state: State) {
   return {
@@ -43,8 +43,6 @@ type ChatsProps = {
 };
 
 export default class Chats extends Block {
-  chatsController = new ChatsController();
-
   constructor() {
     super({
       user: {},
@@ -86,7 +84,7 @@ export default class Chats extends Block {
           if (!addChatData) {
             return;
           }
-          this.chatsController.createChat(addChatData as AddChatFormModel).then(() => {
+          chatsController.createChat(addChatData as AddChatFormModel).then(() => {
             this.children.addChatModal.element?.classList.remove('modal_opened');
           });
         }
@@ -119,7 +117,7 @@ export default class Chats extends Block {
             return;
           }
           const activeChatId = (this.props as ChatsProps).activeChat!.id;
-          this.chatsController.addUsers(addUserData as AddUserFormModel, activeChatId).then(() => {
+          chatsController.addUsers(addUserData as AddUserFormModel, activeChatId).then(() => {
             this.children.addUserModal.element?.classList.remove('modal_opened');
           });
         }
@@ -152,7 +150,7 @@ export default class Chats extends Block {
             return;
           }
           const activeChatId = (this.props as ChatsProps).activeChat!.id;
-          this.chatsController.removeUsers(removeUserData as RemoveUserFormModel, activeChatId).then(() => {
+          chatsController.removeUsers(removeUserData as RemoveUserFormModel, activeChatId).then(() => {
             this.children.removeUserModal.element?.classList.remove('modal_opened');
           });
         }
@@ -179,7 +177,7 @@ export default class Chats extends Block {
         submit: (event: SubmitEvent) => {
           event.preventDefault();
           const activeChatId = (this.props as ChatsProps).activeChat!.id;
-          this.chatsController.deleteChat({ chatId: activeChatId }).then(() => {
+          chatsController.deleteChat({ chatId: activeChatId }).then(() => {
             this.setProps({
               activeChat: null
             });
@@ -215,7 +213,7 @@ export default class Chats extends Block {
         events: {
           click: () => {
             const userId = (this.props as ChatsProps).user.id;
-            this.chatsController.getWebSocketToken(chat.id)
+            chatsController.getWebSocketToken(chat.id)
               .then((webSocketToken) => {
                 if (webSocketToken) {
                   const socket = new WebSocketAPI(userId, chat.id, webSocketToken);

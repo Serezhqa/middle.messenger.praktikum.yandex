@@ -13,13 +13,11 @@ import {
   password2Validation,
   formSubmitHandler
 } from '../../utils/validation';
-import AuthController from '../../controllers/AuthController';
 import { RegisterFormModel } from '../../api/models';
 import router from '../../utils/Router';
+import authController from '../../controllers/AuthController';
 
 export default class Register extends Block {
-  authController = new AuthController();
-
   protected initChildren() {
     this.children.emailAuthInput = new AuthInput({
       name: 'email',
@@ -118,7 +116,7 @@ export default class Register extends Block {
           return;
         }
         delete registerData?.password2;
-        this.authController.register(registerData as RegisterFormModel);
+        authController.register(registerData as RegisterFormModel);
       });
     }
   }

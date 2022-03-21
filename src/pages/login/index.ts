@@ -6,11 +6,9 @@ import SubmitButton from '../../components/submitButton';
 import { formSubmitHandler, loginValidation, passwordValidation } from '../../utils/validation';
 import router from '../../utils/Router';
 import { LoginFormModel } from '../../api/models';
-import AuthController from '../../controllers/AuthController';
+import authController from '../../controllers/AuthController';
 
 export default class Login extends Block {
-  authController = new AuthController();
-
   protected initChildren() {
     this.children.loginAuthInput = new AuthInput({
       name: 'login',
@@ -63,7 +61,7 @@ export default class Login extends Block {
         if (!loginData) {
           return;
         }
-        this.authController.login(loginData as LoginFormModel);
+        authController.login(loginData as LoginFormModel);
       });
     }
   }

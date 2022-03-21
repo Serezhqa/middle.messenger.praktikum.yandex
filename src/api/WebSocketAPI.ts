@@ -1,7 +1,5 @@
 import store from '../utils/Store';
-import ChatsController from '../controllers/ChatsController';
-
-const chatsController = new ChatsController();
+import chatsController from '../controllers/ChatsController';
 
 export default class WebSocketAPI {
   socket: WebSocket;

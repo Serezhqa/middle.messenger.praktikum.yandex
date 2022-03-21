@@ -6,8 +6,8 @@
     "dev": "parcel static/index.html",
     "build": "parcel build static/index.html",
     "start": "npm install && npm run build && node ./server.js",
-    "lint": ".\\node_modules\\.bin\\eslint .",
-    "test": ".\\node_modules\\.bin\\mocha"
+    "lint": "eslint .",
+    "test": "mocha"
   },
   "repository": {
     "type": "git",

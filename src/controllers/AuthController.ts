@@ -1,30 +1,17 @@
-import RegisterAPI from '../api/auth/RegisterAPI';
-import GetUserAPI from '../api/auth/GetUserAPI';
-import LoginAPI from '../api/auth/LoginAPI';
-import LogoutAPI from '../api/auth/LogoutAPI';
 import { LoginFormModel, RegisterFormModel } from '../api/models';
 import router from '../utils/Router';
 import store from '../utils/Store';
-import ChatsController from './ChatsController';
+import authAPI from '../api/AuthAPI';
+import chatsController from './ChatsController';
 
-export default class AuthController {
-  registerAPI = new RegisterAPI();
-
-  getUserAPI = new GetUserAPI();
-
-  loginAPI = new LoginAPI();
-
-  logoutAPI = new LogoutAPI();
-
-  chatsController = new ChatsController();
-
+class AuthController {
   async register(registerData: RegisterFormModel) {
     try {
-      this.registerAPI.create(registerData)
+      authAPI.register(registerData)
         .then((response: XMLHttpRequest) => {
           if (response.status === 200) {
             this.getUser()
-              .then(() => this.chatsController.getChats());
+              .then(() => chatsController.getChats());
           }
         });
     } catch (error) {
@@ -34,7 +21,7 @@ export default class AuthController {
 
   async getUser() {
     try {
-      this.getUserAPI.request()
+      authAPI.getUser()
         .then((response: XMLHttpRequest) => {
           if (response.status === 200) {
             store.set('user', JSON.parse(response.response));
@@ -52,11 +39,11 @@ export default class AuthController {
 
   async login(loginData: LoginFormModel) {
     try {
-      this.loginAPI.request(loginData)
+      authAPI.login(loginData)
         .then((response: XMLHttpRequest) => {
           if (response.status === 200) {
             this.getUser()
-              .then(() => this.chatsController.getChats());
+              .then(() => chatsController.getChats());
           }
         });
     } catch (error) {
@@ -66,7 +53,7 @@ export default class AuthController {
 
   async logout() {
     try {
-      this.logoutAPI.request()
+      authAPI.logout()
         .then((response: XMLHttpRequest) => {
           if (response.status === 200) {
             router.go('/');
@@ -77,3 +64,5 @@ export default class AuthController {
     }
   }
 }
+
+export default new AuthController();

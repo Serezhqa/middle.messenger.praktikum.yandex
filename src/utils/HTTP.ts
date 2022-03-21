@@ -5,7 +5,7 @@ enum Methods {
   DELETE = 'DELETE'
 }
 
-export type MethodOptions = {
+type MethodOptions = {
   timeout: number;
   data?: Record<string, unknown> | string;
   headers?: Record<string, string>;
@@ -24,6 +24,8 @@ function queryStringify(data: Record<string, unknown>) {
     return `${result}${key}=${data[key]}${index < keys.length - 1 ? '&' : ''}`;
   }, '?');
 }
+
+export const baseURL = 'https://ya-praktikum.tech/api/v2';
 
 class HTTP {
   get(url: string, options: MethodOptions) {

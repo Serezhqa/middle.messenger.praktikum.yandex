@@ -1,38 +1,19 @@
-import GetChatsAPI from '../api/chats/GetChatsAPI';
 import store from '../utils/Store';
-import CreateChatAPI from '../api/chats/CreateChatAPI';
 import {
   AddChatFormModel,
   AddUserFormModel,
   ChatUsersModel,
   DeleteChatFormModel,
   RemoveUserFormModel,
-  UserModel, WebSocketTokenModel
+  UserModel,
+  WebSocketTokenModel
 } from '../api/models';
-import GetUserByLoginAPI from '../api/chats/GetUserByLoginAPI';
-import AddUsersAPI from '../api/chats/AddUsersAPI';
-import DeleteChatAPI from '../api/chats/DeleteChatAPI';
-import RemoveUsersAPI from '../api/chats/RemoveUsersAPI';
-import RequestWebSocketTokenAPI from '../api/chats/RequestWebSocketTokenAPI';
+import chatsAPI from '../api/ChatsAPI';
 
-export default class ChatsController {
-  getChatsAPI = new GetChatsAPI();
-
-  createChatAPI = new CreateChatAPI();
-
-  getUserByLoginAPI = new GetUserByLoginAPI();
-
-  addUsersAPI = new AddUsersAPI();
-
-  deleteChatAPI = new DeleteChatAPI();
-
-  removeUsersAPI = new RemoveUsersAPI();
-
-  requestWebSocketTokenAPI = new RequestWebSocketTokenAPI();
-
+class ChatsController {
   async getChats() {
     try {
-      this.getChatsAPI.request()
+      chatsAPI.getChats()
         .then((response: XMLHttpRequest) => {
           if (response.status === 200) {
             store.set('chats', JSON.parse(response.response));
@@ -45,7 +26,7 @@ export default class ChatsController {
 
   async createChat(addChatData: AddChatFormModel) {
     try {
-      this.createChatAPI.create(addChatData)
+      chatsAPI.createChat(addChatData)
         .then((response: XMLHttpRequest) => {
           if (response.status === 200) {
             this.getChats();
@@ -59,7 +40,7 @@ export default class ChatsController {
   async getUserByLogin(addUserData: AddUserFormModel) {
     try {
       // eslint-disable-next-line @typescript-eslint/return-await
-      return this.getUserByLoginAPI.request(addUserData)
+      return chatsAPI.getUserByLogin(addUserData)
         .then((response: XMLHttpRequest) => {
           if (response.status === 200) {
             const users: UserModel[] = JSON.parse(response.response);
@@ -84,7 +65,7 @@ export default class ChatsController {
             users: [user.id],
             chatId: activeChatId
           };
-          this.addUsersAPI.update(data);
+          chatsAPI.addUsers(data);
         });
     } catch (error) {
       console.log(error);
@@ -103,7 +84,7 @@ export default class ChatsController {
             users: [user.id],
             chatId: activeChatId
           };
-          this.removeUsersAPI.delete(data);
+          chatsAPI.removeUsers(data);
         });
     } catch (error) {
       console.log(error);
@@ -112,7 +93,7 @@ export default class ChatsController {
 
   async deleteChat(chatId: DeleteChatFormModel) {
     try {
-      this.deleteChatAPI.delete(chatId)
+      chatsAPI.deleteChat(chatId)
         .then((response: XMLHttpRequest) => {
           if (response.status === 200) {
             this.getChats();
@@ -126,7 +107,7 @@ export default class ChatsController {
   async getWebSocketToken(chatId: number) {
     try {
       // eslint-disable-next-line
-      return this.requestWebSocketTokenAPI.request(chatId)
+      return chatsAPI.getWebSocketToken(chatId)
         .then((response: XMLHttpRequest) => {
           if (response.status === 200) {
             return (JSON.parse(response.response) as WebSocketTokenModel).token;
@@ -137,3 +118,5 @@ export default class ChatsController {
     }
   }
 }
+
+export default new ChatsController();
