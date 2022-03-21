@@ -1,5 +1,6 @@
 import { v4 as makeUUID } from 'uuid';
 import EventBus from './EventBus';
+import isEqual from './isEqual';
 
 export default class Block {
   static EVENTS = {
@@ -24,9 +25,9 @@ export default class Block {
 
     this.children = children;
 
-    this.initChildren();
-
     this.props = this._makePropsProxy(props);
+
+    this.initChildren();
 
     this.eventBus = new EventBus();
     this._registerEvents(this.eventBus);
@@ -62,11 +63,10 @@ export default class Block {
   }
 
   protected componentDidUpdate(oldProps: Record<string, unknown>, newProps: Record<string, unknown>) {
-    if (oldProps && newProps) {
-      // Эта незамысловатая конструкция чтобы eslint и typescript
-      // не орали, что переменные не используются.
-      // В следующем спринте будет что-то адекватное.
+    if (isEqual(oldProps, newProps)) {
+      return false;
     }
+
     return true;
   }
 
@@ -94,10 +94,26 @@ export default class Block {
     this._element = newElement;
 
     this._addEvents();
+    this.afterRender();
   }
 
   protected render(): DocumentFragment {
     return new DocumentFragment();
+  }
+
+  private _addEvents() {
+    const events: Record<string, () => void> = this.props.events as Record<string, () => void>;
+
+    if (!events) {
+      return;
+    }
+
+    Object.entries(events).forEach(([event, listener]) => {
+      this._element?.addEventListener(event, listener);
+    });
+  }
+
+  protected afterRender() {
   }
 
   getContent(): HTMLElement | null {
@@ -122,23 +138,6 @@ export default class Block {
         throw new Error('Нет доступа');
       }
     });
-  }
-
-  private _addEvents() {
-    this.addEvents();
-
-    const events: Record<string, () => void> = this.props.events as Record<string, () => void>;
-
-    if (!events) {
-      return;
-    }
-
-    Object.entries(events).forEach(([event, listener]) => {
-      this._element?.addEventListener(event, listener);
-    });
-  }
-
-  protected addEvents() {
   }
 
   private _getPropsAndChildren(propsAndChildren: Record<string, unknown>) {

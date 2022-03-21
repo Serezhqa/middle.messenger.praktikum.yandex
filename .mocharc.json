@@ -1,0 +1,8 @@
+{
+  "extension": ["ts"],
+  "spec": "**/*.spec.ts",
+  "require": [
+    "./babel-register.js",
+    "./virtualDOM.js"
+  ]
+}

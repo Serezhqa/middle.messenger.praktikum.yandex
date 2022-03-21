@@ -1,0 +1,16 @@
+<div class="profile-input">
+  <label class="profile-input__label" for="profile-input__input_type_{{name}}">{{text}}</label>
+  <input class="profile-input__input" id="profile-input__input_type_{{name}}"
+         type="{{type}}"
+         name="{{name}}"
+         value="{{value}}"
+         placeholder="{{text}}"
+         {{#unless editing}}disabled{{/unless}}
+         minlength="{{minlength}}"
+         maxlength="{{maxlength}}"
+         {{#if pattern}}pattern="{{pattern}}"{{/if}}
+         title="{{errorText}}"
+         required
+  />
+  <span class="profile-input__error">{{errorText}}</span>
+</div>
