@@ -61,11 +61,11 @@ class ChatsController {
             return;
           }
 
-          const data: ChatUsersModel = {
+          const users: ChatUsersModel = {
             users: [user.id],
             chatId: activeChatId
           };
-          chatsAPI.addUsers(data);
+          chatsAPI.addUsers(users);
         });
     } catch (error) {
       console.log(error);
@@ -80,11 +80,11 @@ class ChatsController {
             return;
           }
 
-          const data: ChatUsersModel = {
+          const users: ChatUsersModel = {
             users: [user.id],
             chatId: activeChatId
           };
-          chatsAPI.removeUsers(data);
+          chatsAPI.removeUsers(users);
         });
     } catch (error) {
       console.log(error);
