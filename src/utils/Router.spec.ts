@@ -32,7 +32,7 @@ describe('Проверяем Router.ts', () => {
   });
 
   it('Начальная инициализация работает', () => {
-    expect(window.location.pathname).to.eq('/');
+    expect(window.location.pathname).to.eq('/error');
   });
 
   it('Метод go() работает', () => {
