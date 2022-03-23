@@ -6,11 +6,5 @@ module.exports = (api) => {
     '@babel/preset-env'
   ];
 
-  return {
-    env: {
-      test: {
-        presets
-      }
-    }
-  };
+  return { presets };
 };

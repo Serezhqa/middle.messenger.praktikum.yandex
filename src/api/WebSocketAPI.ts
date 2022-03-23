@@ -4,7 +4,7 @@ import chatsController from '../controllers/ChatsController';
 export default class WebSocketAPI {
   socket: WebSocket;
 
-  timerId: number;
+  timerId: NodeJS.Timer;
 
   constructor(userId: number, chatId: number, token: string) {
     this.socket = new WebSocket(`wss://ya-praktikum.tech/ws/chats/${userId}/${chatId}/${token}`);

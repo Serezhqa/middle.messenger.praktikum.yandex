@@ -28,4 +28,3 @@ authController.getUser()
 
 // TODO:
 // Заменить .then() на async/await
-// Настроить тесты по инструкциям Егора
