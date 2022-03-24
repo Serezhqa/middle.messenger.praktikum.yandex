@@ -112,9 +112,11 @@ export default class Register extends Block {
           'auth-input__error_visible',
           true
         );
+
         if (!registerData) {
           return;
         }
+
         delete registerData?.password2;
         authController.register(registerData as RegisterFormModel);
       });

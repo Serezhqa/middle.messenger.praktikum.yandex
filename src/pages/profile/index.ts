@@ -318,6 +318,7 @@ export default class Profile extends Block {
           'profile-input__error_visible',
           editingPassword
         );
+
         if (!data) {
           return;
         }

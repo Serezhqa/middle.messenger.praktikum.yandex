@@ -201,6 +201,7 @@ export default class Chats extends Block {
       const isActive = (this.props as ChatsProps).activeChat?.id === chat.id;
       const isOwn = chat.last_message?.user.login === (store.getState().user as UserModel).login;
       const time = getTime(chat.last_message?.time);
+
       const chatElement = new Chat({
         isActive,
         image: chat.avatar || mockChatImage,
@@ -239,6 +240,7 @@ export default class Chats extends Block {
 
     (this.props as ChatsProps).messages.forEach((message) => {
       const isOwn = message.user_id === (this.props as ChatsProps).user.id;
+
       const messageElement = new Message({
         isOwn,
         text: message.content,
