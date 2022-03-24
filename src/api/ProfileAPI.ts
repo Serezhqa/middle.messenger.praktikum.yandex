@@ -2,14 +2,14 @@ import { UpdateAvatarFormModel, UpdatePasswordFormModel, UpdateUserFormModel } f
 import http, { baseURL } from '../utils/HTTP';
 
 class ProfileAPI {
-  updateAvatar(updateAvatarData: UpdateAvatarFormModel) {
+  updateAvatar(updateAvatarData: UpdateAvatarFormModel): Promise<XMLHttpRequest> {
     return http.put(baseURL + '/user/profile/avatar', {
       data: updateAvatarData,
       timeout: 5000
     });
   }
 
-  updatePassword(updatePasswordData: UpdatePasswordFormModel) {
+  updatePassword(updatePasswordData: UpdatePasswordFormModel): Promise<XMLHttpRequest> {
     return http.put(baseURL + '/user/password', {
       data: JSON.stringify(updatePasswordData),
       timeout: 5000,
@@ -19,7 +19,7 @@ class ProfileAPI {
     });
   }
 
-  updateUser(updateUserData: UpdateUserFormModel) {
+  updateUser(updateUserData: UpdateUserFormModel): Promise<XMLHttpRequest> {
     return http.put(baseURL + '/user/profile', {
       data: JSON.stringify(updateUserData),
       timeout: 5000,

@@ -5,12 +5,11 @@ import profileAPI from '../api/ProfileAPI';
 class ProfileController {
   async updateUser(updateUserData: UpdateUserFormModel) {
     try {
-      profileAPI.updateUser(updateUserData)
-        .then((response: XMLHttpRequest) => {
-          if (response.status === 200) {
-            store.set('user', JSON.parse(response.response));
-          }
-        });
+      const response = await profileAPI.updateUser(updateUserData);
+
+      if (response.status === 200) {
+        store.set('user', JSON.parse(response.response));
+      }
     } catch (error) {
       console.log(error);
     }
@@ -18,7 +17,7 @@ class ProfileController {
 
   async updatePassword(updatePasswordData: UpdatePasswordFormModel) {
     try {
-      profileAPI.updatePassword(updatePasswordData);
+      await profileAPI.updatePassword(updatePasswordData);
     } catch (error) {
       console.log(error);
     }
@@ -26,12 +25,11 @@ class ProfileController {
 
   async updateAvatar(updateAvatarData: UpdateAvatarFormModel) {
     try {
-      profileAPI.updateAvatar(updateAvatarData)
-        .then((response: XMLHttpRequest) => {
-          if (response.status === 200) {
-            store.set('user', JSON.parse(response.response));
-          }
-        });
+      const response = await profileAPI.updateAvatar(updateAvatarData);
+
+      if (response.status === 200) {
+        store.set('user', JSON.parse(response.response));
+      }
     } catch (error) {
       console.log(error);
     }

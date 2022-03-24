@@ -58,9 +58,11 @@ export default class Login extends Block {
           event,
           'auth-input__error_visible'
         );
+
         if (!loginData) {
           return;
         }
+
         authController.login(loginData as LoginFormModel);
       });
     }

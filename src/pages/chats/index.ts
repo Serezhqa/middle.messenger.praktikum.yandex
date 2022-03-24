@@ -76,17 +76,18 @@ export default class Chats extends Block {
         text: 'Создать'
       }),
       events: {
-        submit: (event: SubmitEvent) => {
+        submit: async (event: SubmitEvent) => {
           const addChatData = formSubmitHandler(
             event,
             'auth-input__error_visible'
           );
+
           if (!addChatData) {
             return;
           }
-          chatsController.createChat(addChatData as AddChatFormModel).then(() => {
-            this.children.addChatModal.element?.classList.remove('modal_opened');
-          });
+
+          await chatsController.createChat(addChatData as AddChatFormModel);
+          this.children.addChatModal.element?.classList.remove('modal_opened');
         }
       }
     });
@@ -108,7 +109,7 @@ export default class Chats extends Block {
         text: 'Добавить'
       }),
       events: {
-        submit: (event: SubmitEvent) => {
+        submit: async (event: SubmitEvent) => {
           const addUserData = formSubmitHandler(
             event,
             'auth-input__error_visible'
@@ -117,9 +118,8 @@ export default class Chats extends Block {
             return;
           }
           const activeChatId = (this.props as ChatsProps).activeChat!.id;
-          chatsController.addUsers(addUserData as AddUserFormModel, activeChatId).then(() => {
-            this.children.addUserModal.element?.classList.remove('modal_opened');
-          });
+          await chatsController.addUsers(addUserData as AddUserFormModel, activeChatId);
+          this.children.addUserModal.element?.classList.remove('modal_opened');
         }
       }
     });
@@ -141,7 +141,7 @@ export default class Chats extends Block {
         text: 'Удалить'
       }),
       events: {
-        submit: (event: SubmitEvent) => {
+        submit: async (event: SubmitEvent) => {
           const removeUserData = formSubmitHandler(
             event,
             'auth-input__error_visible'
@@ -150,9 +150,8 @@ export default class Chats extends Block {
             return;
           }
           const activeChatId = (this.props as ChatsProps).activeChat!.id;
-          chatsController.removeUsers(removeUserData as RemoveUserFormModel, activeChatId).then(() => {
-            this.children.removeUserModal.element?.classList.remove('modal_opened');
-          });
+          await chatsController.removeUsers(removeUserData as RemoveUserFormModel, activeChatId);
+          this.children.removeUserModal.element?.classList.remove('modal_opened');
         }
       }
     });
@@ -174,15 +173,16 @@ export default class Chats extends Block {
         text: 'Удалить'
       }),
       events: {
-        submit: (event: SubmitEvent) => {
+        submit: async (event: SubmitEvent) => {
           event.preventDefault();
           const activeChatId = (this.props as ChatsProps).activeChat!.id;
-          chatsController.deleteChat({ chatId: activeChatId }).then(() => {
-            this.setProps({
-              activeChat: null
-            });
-            this.children.deleteChatModal.element?.classList.remove('modal_opened');
+          await chatsController.deleteChat({
+            chatId: activeChatId
           });
+          this.setProps({
+            activeChat: null
+          });
+          this.children.deleteChatModal.element?.classList.remove('modal_opened');
         }
       }
     });
@@ -211,22 +211,25 @@ export default class Chats extends Block {
         unreadCount: chat.unread_count,
         id: chat.id,
         events: {
-          click: () => {
+          click: async () => {
+            if (isActive) {
+              return;
+            }
+
             const userId = (this.props as ChatsProps).user.id;
-            chatsController.getWebSocketToken(chat.id)
-              .then((webSocketToken) => {
-                if (webSocketToken) {
-                  const socket = new WebSocketAPI(userId, chat.id, webSocketToken);
-                  this.setProps({ socket });
+            const webSocketToken = await chatsController.getWebSocketToken(chat.id);
+
+            if (webSocketToken) {
+              const socket = new WebSocketAPI(userId, chat.id, webSocketToken);
+              this.setProps({
+                socket,
+                activeChat: {
+                  id: chat.id,
+                  title: chat.title,
+                  image: chat.avatar || mockChatImage
                 }
               });
-            this.setProps({
-              activeChat: {
-                id: chat.id,
-                title: chat.title,
-                image: chat.avatar || mockChatImage
-              },
-            });
+            }
           }
         }
       });

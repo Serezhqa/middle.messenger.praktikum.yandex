@@ -7,7 +7,7 @@ import {
 import http, { baseURL } from '../utils/HTTP';
 
 class ChatsAPI {
-  addUsers(users: ChatUsersModel) {
+  addUsers(users: ChatUsersModel): Promise<XMLHttpRequest> {
     return http.put(baseURL + '/chats/users', {
       data: JSON.stringify(users),
       timeout: 5000,
@@ -17,7 +17,7 @@ class ChatsAPI {
     });
   }
 
-  createChat(addChatData: AddChatFormModel) {
+  createChat(addChatData: AddChatFormModel): Promise<XMLHttpRequest> {
     return http.post(baseURL + '/chats', {
       data: JSON.stringify(addChatData),
       timeout: 5000,
@@ -27,7 +27,7 @@ class ChatsAPI {
     });
   }
 
-  deleteChat(chatId: DeleteChatFormModel) {
+  deleteChat(chatId: DeleteChatFormModel): Promise<XMLHttpRequest> {
     return http.delete(baseURL + '/chats', {
       data: JSON.stringify(chatId),
       timeout: 5000,
@@ -37,13 +37,13 @@ class ChatsAPI {
     });
   }
 
-  getChats() {
+  getChats(): Promise<XMLHttpRequest> {
     return http.get(baseURL + '/chats', {
       timeout: 5000
     });
   }
 
-  getUserByLogin(addUserData: AddUserFormModel) {
+  getUserByLogin(addUserData: AddUserFormModel): Promise<XMLHttpRequest> {
     return http.post(baseURL + '/user/search', {
       data: JSON.stringify(addUserData),
       timeout: 5000,
@@ -53,7 +53,7 @@ class ChatsAPI {
     });
   }
 
-  removeUsers(users: ChatUsersModel) {
+  removeUsers(users: ChatUsersModel): Promise<XMLHttpRequest> {
     return http.delete(baseURL + '/chats/users', {
       data: JSON.stringify(users),
       timeout: 5000,
@@ -63,7 +63,7 @@ class ChatsAPI {
     });
   }
 
-  getWebSocketToken(chatId: number) {
+  getWebSocketToken(chatId: number): Promise<XMLHttpRequest> {
     return http.post(baseURL + '/chats/token/' + chatId, {
       timeout: 5000
     });

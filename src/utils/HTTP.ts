@@ -28,7 +28,7 @@ function queryStringify(data: Record<string, unknown>) {
 export const baseURL = 'https://ya-praktikum.tech/api/v2';
 
 class HTTP {
-  get(url: string, options: MethodOptions) {
+  get(url: string, options: MethodOptions): Promise<XMLHttpRequest> {
     if (options.data && typeof options.data !== 'string') {
       url += queryStringify(options.data);
     }
@@ -36,19 +36,19 @@ class HTTP {
     return this.request(url, { ...options, method: Methods.GET }, options.timeout);
   }
 
-  post(url: string, options: MethodOptions) {
+  post(url: string, options: MethodOptions): Promise<XMLHttpRequest> {
     return this.request(url, { ...options, method: Methods.POST }, options.timeout);
   }
 
-  put(url: string, options: MethodOptions) {
+  put(url: string, options: MethodOptions): Promise<XMLHttpRequest> {
     return this.request(url, { ...options, method: Methods.PUT }, options.timeout);
   }
 
-  delete(url: string, options: MethodOptions) {
+  delete(url: string, options: MethodOptions): Promise<XMLHttpRequest> {
     return this.request(url, { ...options, method: Methods.DELETE }, options.timeout);
   }
 
-  request(url: string, options: RequestOptions, timeout = 5000) {
+  request(url: string, options: RequestOptions, timeout = 5000): Promise<XMLHttpRequest> {
     const { method, data, headers = {} } = options;
 
     return new Promise((resolve, reject) => {

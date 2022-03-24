@@ -2,13 +2,13 @@ import http, { baseURL } from '../utils/HTTP';
 import { LoginFormModel, RegisterFormModel } from './models';
 
 class AuthAPI {
-  getUser() {
+  getUser(): Promise<XMLHttpRequest> {
     return http.get(baseURL + '/auth/user', {
       timeout: 5000
     });
   }
 
-  login(loginData: LoginFormModel) {
+  login(loginData: LoginFormModel): Promise<XMLHttpRequest> {
     return http.post(baseURL + '/auth/signin', {
       data: JSON.stringify(loginData),
       timeout: 5000,
@@ -18,13 +18,13 @@ class AuthAPI {
     });
   }
 
-  logout() {
+  logout(): Promise<XMLHttpRequest> {
     return http.post(baseURL + '/auth/logout', {
       timeout: 5000
     });
   }
 
-  register(registerData: RegisterFormModel) {
+  register(registerData: RegisterFormModel): Promise<XMLHttpRequest> {
     return http.post(baseURL + '/auth/signup', {
       data: JSON.stringify(registerData),
       timeout: 5000,

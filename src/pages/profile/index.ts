@@ -181,30 +181,29 @@ export default class Profile extends Block {
         text: 'Поменять'
       }),
       events: {
-        submit: (event: SubmitEvent) => {
+        submit: async (event: SubmitEvent) => {
           event.preventDefault();
 
           const form = event.target as HTMLFormElement;
           const formData = new FormData(form);
 
-          profileController.updateAvatar(formData as unknown as UpdateAvatarFormModel).then(() => {
-            form.reset();
-            this.children.changeImageModal.element?.classList.remove('modal_opened');
+          await profileController.updateAvatar(formData as unknown as UpdateAvatarFormModel);
+          form.reset();
+          this.children.changeImageModal.element?.classList.remove('modal_opened');
 
-            const modalTitleElement = this.element?.querySelector('.modal__title');
-            const labelElement = this.element?.querySelector('.modal__file-label');
-            const filenameElement = this.element?.querySelector('.modal__filename');
+          const modalTitleElement = this.element?.querySelector('.modal__title');
+          const labelElement = this.element?.querySelector('.modal__file-label');
+          const filenameElement = this.element?.querySelector('.modal__filename');
 
-            if (modalTitleElement) {
-              modalTitleElement.textContent = 'Загрузите файл';
-            }
+          if (modalTitleElement) {
+            modalTitleElement.textContent = 'Загрузите файл';
+          }
 
-            if (filenameElement && labelElement) {
-              labelElement.classList.remove('modal__file-label_hidden');
-              filenameElement.textContent = '';
-              filenameElement.classList.remove('modal__filename_visible');
-            }
-          });
+          if (filenameElement && labelElement) {
+            labelElement.classList.remove('modal__file-label_hidden');
+            filenameElement.textContent = '';
+            filenameElement.classList.remove('modal__filename_visible');
+          }
         }
       }
     });
