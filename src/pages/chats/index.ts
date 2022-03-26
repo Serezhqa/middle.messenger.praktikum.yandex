@@ -217,6 +217,10 @@ export default class Chats extends Block {
               return;
             }
 
+            this.setProps({
+              messages: []
+            });
+
             const userId = (this.props as ChatsProps).user.id;
             const webSocketToken = await chatsController.getWebSocketToken(chat.id);
 
