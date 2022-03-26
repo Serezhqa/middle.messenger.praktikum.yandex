@@ -62,7 +62,7 @@
     "webpack-dev-server": "4.7.4"
   },
   "lint-staged": {
-    "*.{js, ts}": "eslint",
+    "*.{js,ts}": "eslint",
     "*.scss": "npx stylelint",
     "*": "npm run test"
   }
