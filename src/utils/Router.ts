@@ -11,7 +11,7 @@ class Router {
   constructor(rootQuery: string) {
     this.routes = [];
     this.history = window.history;
-    this._rootQuery = rootQuery
+    this._rootQuery = rootQuery;
   }
 
   use(pathname: string, block: typeof Block, props?: Record<string, unknown>) {
