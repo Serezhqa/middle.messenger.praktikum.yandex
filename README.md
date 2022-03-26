@@ -16,5 +16,3 @@
 - `npm run build` — сборка стабильной версии,
 - `npm run start` — запуск локального сервера с раздачей статики из папки dist,
 - `npm run test` — запуск тестов.
-
-Ссылка на PR: https://github.com/Serezhqa/middle.messenger.praktikum.yandex/pull/6
