@@ -23,7 +23,7 @@ export default class WebSocketAPI {
 
       const data = JSON.parse(event.data);
 
-      if (Array.isArray(data) && data.length) {
+      if (Array.isArray(data)) {
         store.set('messages', data);
       }
 
