@@ -16,13 +16,13 @@ import {
   formSubmitHandler
 } from '../../utils/validation';
 import router from '../../utils/Router';
-import AuthController from '../../controllers/AuthController';
 import store, { State, StoreEvents } from '../../utils/Store';
 import { UpdateAvatarFormModel, UpdateUserFormModel, UserModel } from '../../api/models';
-import ProfileController from '../../controllers/ProfileController';
 import isEqual, { PlainObject } from '../../utils/isEqual';
 import mockProfilePicture from '../../images/mock-profile-picture.svg';
-import { baseURL } from '../../api/BaseAPI';
+import { baseURL } from '../../utils/HTTP';
+import profileController from '../../controllers/ProfileController';
+import authController from '../../controllers/AuthController';
 
 function mapStateToProps(state: State) {
   return {
@@ -44,10 +44,6 @@ type ProfileProps = {
 };
 
 export default class Profile extends Block {
-  authController = new AuthController();
-
-  profileController = new ProfileController();
-
   constructor() {
     super({
       editingData: false,
@@ -185,30 +181,29 @@ export default class Profile extends Block {
         text: 'Поменять'
       }),
       events: {
-        submit: (event: SubmitEvent) => {
+        submit: async (event: SubmitEvent) => {
           event.preventDefault();
 
           const form = event.target as HTMLFormElement;
           const formData = new FormData(form);
 
-          this.profileController.updateAvatar(formData as unknown as UpdateAvatarFormModel).then(() => {
-            form.reset();
-            this.children.changeImageModal.element?.classList.remove('modal_opened');
+          await profileController.updateAvatar(formData as unknown as UpdateAvatarFormModel);
+          form.reset();
+          this.children.changeImageModal.element?.classList.remove('modal_opened');
 
-            const modalTitleElement = this.element?.querySelector('.modal__title');
-            const labelElement = this.element?.querySelector('.modal__file-label');
-            const filenameElement = this.element?.querySelector('.modal__filename');
+          const modalTitleElement = this.element?.querySelector('.modal__title');
+          const labelElement = this.element?.querySelector('.modal__file-label');
+          const filenameElement = this.element?.querySelector('.modal__filename');
 
-            if (modalTitleElement) {
-              modalTitleElement.textContent = 'Загрузите файл';
-            }
+          if (modalTitleElement) {
+            modalTitleElement.textContent = 'Загрузите файл';
+          }
 
-            if (filenameElement && labelElement) {
-              labelElement.classList.remove('modal__file-label_hidden');
-              filenameElement.textContent = '';
-              filenameElement.classList.remove('modal__filename_visible');
-            }
-          });
+          if (filenameElement && labelElement) {
+            labelElement.classList.remove('modal__file-label_hidden');
+            filenameElement.textContent = '';
+            filenameElement.classList.remove('modal__filename_visible');
+          }
         }
       }
     });
@@ -272,7 +267,7 @@ export default class Profile extends Block {
     const logoutLink = this.element.querySelector('.profile__button_type_logout');
     if (logoutLink) {
       logoutLink.addEventListener('click', () => {
-        this.authController.logout();
+        authController.logout();
       });
     }
 
@@ -323,15 +318,16 @@ export default class Profile extends Block {
           'profile-input__error_visible',
           editingPassword
         );
+
         if (!data) {
           return;
         }
 
         if (editingPassword) {
           const { oldPassword, password: newPassword } = data;
-          this.profileController.updatePassword({ oldPassword, newPassword });
+          profileController.updatePassword({ oldPassword, newPassword });
         } else {
-          this.profileController.updateUser(data as UpdateUserFormModel);
+          profileController.updateUser(data as UpdateUserFormModel);
         }
 
         this.setProps({

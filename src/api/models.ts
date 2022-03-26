@@ -61,13 +61,15 @@ export type ChatsModel = {
   avatar: string | null;
   created_by: number;
   id: number;
-  last_message: {
-    user: UserModel;
-    time: string;
-    content: string;
-  } | null;
+  last_message: LastMessage | null;
   title: string;
   unread_count: number;
+};
+
+export type LastMessage = {
+  user: UserModel;
+  time: string;
+  content: string;
 };
 
 export type ChatUsersModel = {
@@ -87,13 +89,15 @@ export type WebSocketMessageModel = {
   time: string;
   content: string;
   is_read: boolean;
-  file: null | {
-    id: number;
-    user_id: number;
-    path: string;
-    filename: string;
-    content_type: string;
-    content_size: number;
-    upload_date: string;
-  };
+  file: FileMessage | null;
+};
+
+export type FileMessage = {
+  id: number;
+  user_id: number;
+  path: string;
+  filename: string;
+  content_type: string;
+  content_size: number;
+  upload_date: string;
 };
