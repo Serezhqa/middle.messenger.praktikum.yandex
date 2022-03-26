@@ -1,43 +1,23 @@
-import GetChatsAPI from '../api/chats/GetChatsAPI';
 import store from '../utils/Store';
-import CreateChatAPI from '../api/chats/CreateChatAPI';
 import {
   AddChatFormModel,
   AddUserFormModel,
   ChatUsersModel,
   DeleteChatFormModel,
   RemoveUserFormModel,
-  UserModel, WebSocketTokenModel
+  UserModel,
+  WebSocketTokenModel
 } from '../api/models';
-import GetUserByLoginAPI from '../api/chats/GetUserByLoginAPI';
-import AddUsersAPI from '../api/chats/AddUsersAPI';
-import DeleteChatAPI from '../api/chats/DeleteChatAPI';
-import RemoveUsersAPI from '../api/chats/RemoveUsersAPI';
-import RequestWebSocketTokenAPI from '../api/chats/RequestWebSocketTokenAPI';
+import chatsAPI from '../api/ChatsAPI';
 
-export default class ChatsController {
-  getChatsAPI = new GetChatsAPI();
-
-  createChatAPI = new CreateChatAPI();
-
-  getUserByLoginAPI = new GetUserByLoginAPI();
-
-  addUsersAPI = new AddUsersAPI();
-
-  deleteChatAPI = new DeleteChatAPI();
-
-  removeUsersAPI = new RemoveUsersAPI();
-
-  requestWebSocketTokenAPI = new RequestWebSocketTokenAPI();
-
+class ChatsController {
   async getChats() {
     try {
-      this.getChatsAPI.request()
-        .then((response: XMLHttpRequest) => {
-          if (response.status === 200) {
-            store.set('chats', JSON.parse(response.response));
-          }
-        });
+      const response = await chatsAPI.getChats();
+
+      if (response.status === 200) {
+        store.set('chats', JSON.parse(response.response));
+      }
     } catch (error) {
       console.log(error);
     }
@@ -45,12 +25,11 @@ export default class ChatsController {
 
   async createChat(addChatData: AddChatFormModel) {
     try {
-      this.createChatAPI.create(addChatData)
-        .then((response: XMLHttpRequest) => {
-          if (response.status === 200) {
-            this.getChats();
-          }
-        });
+      const response = await chatsAPI.createChat(addChatData);
+
+      if (response.status === 200) {
+        await this.getChats();
+      }
     } catch (error) {
       console.log(error);
     }
@@ -58,15 +37,12 @@ export default class ChatsController {
 
   async getUserByLogin(addUserData: AddUserFormModel) {
     try {
-      // eslint-disable-next-line @typescript-eslint/return-await
-      return this.getUserByLoginAPI.request(addUserData)
-        .then((response: XMLHttpRequest) => {
-          if (response.status === 200) {
-            const users: UserModel[] = JSON.parse(response.response);
-            const user = users.find((item) => item.login === addUserData.login);
-            return user;
-          }
-        });
+      const response = await chatsAPI.getUserByLogin(addUserData);
+
+      if (response.status === 200) {
+        const users: UserModel[] = JSON.parse(response.response);
+        return users.find((item) => item.login === addUserData.login);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -74,18 +50,17 @@ export default class ChatsController {
 
   async addUsers(addUserData: AddUserFormModel, activeChatId: number) {
     try {
-      this.getUserByLogin(addUserData)
-        .then((user) => {
-          if (!user) {
-            return;
-          }
+      const user = await this.getUserByLogin(addUserData);
 
-          const data: ChatUsersModel = {
-            users: [user.id],
-            chatId: activeChatId
-          };
-          this.addUsersAPI.update(data);
-        });
+      if (!user) {
+        return;
+      }
+
+      const users: ChatUsersModel = {
+        users: [user.id],
+        chatId: activeChatId
+      };
+      await chatsAPI.addUsers(users);
     } catch (error) {
       console.log(error);
     }
@@ -93,18 +68,17 @@ export default class ChatsController {
 
   async removeUsers(removeUserData: RemoveUserFormModel, activeChatId: number) {
     try {
-      this.getUserByLogin(removeUserData)
-        .then((user) => {
-          if (!user) {
-            return;
-          }
+      const user = await this.getUserByLogin(removeUserData);
 
-          const data: ChatUsersModel = {
-            users: [user.id],
-            chatId: activeChatId
-          };
-          this.removeUsersAPI.delete(data);
-        });
+      if (!user) {
+        return;
+      }
+
+      const users: ChatUsersModel = {
+        users: [user.id],
+        chatId: activeChatId
+      };
+      await chatsAPI.removeUsers(users);
     } catch (error) {
       console.log(error);
     }
@@ -112,12 +86,11 @@ export default class ChatsController {
 
   async deleteChat(chatId: DeleteChatFormModel) {
     try {
-      this.deleteChatAPI.delete(chatId)
-        .then((response: XMLHttpRequest) => {
-          if (response.status === 200) {
-            this.getChats();
-          }
-        });
+      const response = await chatsAPI.deleteChat(chatId);
+
+      if (response.status === 200) {
+        await this.getChats();
+      }
     } catch (error) {
       console.log(error);
     }
@@ -125,15 +98,15 @@ export default class ChatsController {
 
   async getWebSocketToken(chatId: number) {
     try {
-      // eslint-disable-next-line
-      return this.requestWebSocketTokenAPI.request(chatId)
-        .then((response: XMLHttpRequest) => {
-          if (response.status === 200) {
-            return (JSON.parse(response.response) as WebSocketTokenModel).token;
-          }
-        });
+      const response = await chatsAPI.getWebSocketToken(chatId);
+
+      if (response.status === 200) {
+        return (JSON.parse(response.response) as WebSocketTokenModel).token;
+      }
     } catch (error) {
       console.log(error);
     }
   }
 }
+
+export default new ChatsController();
